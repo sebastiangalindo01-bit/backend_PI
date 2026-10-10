@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Panel del laboratorio · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="../styles.css" rel="stylesheet">
+  <style>
+    .lab-hero { padding: 24px; border-radius: 14px; background: linear-gradient(117deg, #174B2A 0%, #368B47 100%); color: white; }
+    .lab-hero h1 { margin: 0 0 8px; font-size: clamp(22px, 3vw, 28px); }
+    .lab-hero p { margin: 0; color: #E1EFE3; line-height: 1.5; }
+    .lab-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+    .lab-card { padding: 20px; background: white; border: 1px solid #E4EAE4; border-radius: 12px; box-shadow: 0 2px 8px rgba(18, 59, 34, .04); }
+    .lab-card h2 { margin: 0 0 8px; color: #193A22; font-size: 13px; }
+    .lab-card strong { display: block; color: #193A22; font-size: 25px; }
+    .lab-card span { color: #657067; font-size: 11px; }
+    .lab-section { margin-top: 26px; }
+    .lab-section h2 { margin: 0 0 12px; color: #193A22; font-size: 15px; }
+    .lab-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .lab-action { display: block; padding: 22px; min-height: 92px; box-sizing: border-box; color: #245B32; text-decoration: none; background: white; border: 1px solid #E4EAE4; border-radius: 10px; }
+    .lab-action strong { display: block; margin-bottom: 6px; font-size: 13px; }
+    .lab-action span { color: #657067; font-size: 11px; line-height: 1.5; }
+    @media (max-width: 700px) {
+      .lab-grid, .lab-actions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="app-frame">
+      <main class="app-content demo-screen">
+        <section class="page-hero">
+          <div><h1>Panel del estudiante de laboratorio</h1><p>Consulta tus reservas, horarios y actividades asignadas en los espacios UCEVA.</p></div>
+          <img class="page-hero__art" src="../assets/ilustraciones/laboratorio.svg" alt="" width="240" height="180">
+        </section>
+        <section class="lab-grid" aria-label="Resumen del laboratorio">
+          <article class="lab-card"><h2>Reservas próximas</h2><strong>3</strong><span>Confirmadas para esta semana</span></article>
+          <article class="lab-card"><h2>Horas asignadas</h2><strong>12 h</strong><span>Uso registrado en el período</span></article>
+          <article class="lab-card"><h2>Solicitudes pendientes</h2><strong>1</strong><span>Requiere revisión del laboratorio</span></article>
+        </section>
+        <section class="lab-section">
+          <h2>Accesos principales</h2>
+          <div class="lab-actions">
+            <a class="lab-action" href="02-reservas.html"><strong>Ver reservas asignadas</strong><span>Revisa espacios, fechas, horarios y estados de tus reservas.</span></a>
+            <a class="lab-action" href="../usuario/02-explorar-espacios.html"><strong>Explorar espacios</strong><span>Consulta disponibilidad y solicita un nuevo espacio.</span></a>
+            <a class="lab-action" href="../usuario/09-registrar-asistencia.html"><strong>Registrar asistencia</strong><span>Registra tu ingreso a una reserva activa.</span></a>
+            <a class="lab-action" href="../usuario/10-historial-asistencia.html"><strong>Historial de asistencia</strong><span>Consulta tus registros de uso del laboratorio.</span></a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+  <script src="../layout.js"></script>
+</body>
+</html>

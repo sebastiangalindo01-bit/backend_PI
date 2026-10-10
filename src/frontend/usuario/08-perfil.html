@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Mi perfil · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<link href="reservas.css" rel="stylesheet"/>
+</head>
+<body class="rv" data-page="perfil">
+<div class="wrap">
+<div class="app-frame">
+
+<div class="app-content">
+<main class="rv-page">
+
+  <div class="rv-head">
+    <div>
+      <h1 class="rv-title">Mi perfil</h1>
+      <p class="rv-sub">Información personal de la cuenta (vista de demostración).</p>
+    </div>
+  </div>
+
+  <div class="rv-profile">
+    <section class="rv-card" aria-label="Resumen de la cuenta">
+      <div class="rv-avatar" id="perfil-avatar" aria-hidden="true">NC</div>
+      <h2 class="rv-profile__name" id="perfil-nombre">Nicolas Ceballos</h2>
+      <p class="rv-profile__role">Egresado · Cuenta de ejemplo</p>
+    </section>
+
+    <section class="rv-card" aria-labelledby="datos-titulo">
+      <h2 class="rv-card__title" id="datos-titulo">Datos personales</h2>
+
+      <dl class="rv-dl" id="perfil-vista" style="margin-bottom:16px">
+        <div><dt>Correo:</dt><dd id="v-correo"></dd></div>
+        <div><dt>Teléfono:</dt><dd id="v-telefono"></dd></div>
+        <div><dt>Tipo de usuario:</dt><dd id="v-tipo"></dd></div>
+        <div><dt>Rol:</dt><dd id="v-rol"></dd></div>
+      </dl>
+
+      <form class="rv-profile__form" id="form-perfil" hidden novalidate>
+        <div class="rv-two">
+          <div class="rv-field">
+            <label for="p-nombres">Nombres</label>
+            <input class="rv-input" id="p-nombres" type="text" autocomplete="given-name" aria-describedby="p-nombres-err"/>
+            <p class="rv-error" id="p-nombres-err"></p>
+          </div>
+          <div class="rv-field">
+            <label for="p-apellidos">Apellidos</label>
+            <input class="rv-input" id="p-apellidos" type="text" autocomplete="family-name" aria-describedby="p-apellidos-err"/>
+            <p class="rv-error" id="p-apellidos-err"></p>
+          </div>
+        </div>
+        <div class="rv-field">
+          <label for="p-correo">Correo</label>
+          <input class="rv-input" id="p-correo" type="email" autocomplete="email" aria-describedby="p-correo-err"/>
+          <p class="rv-error" id="p-correo-err"></p>
+        </div>
+        <div class="rv-field">
+          <label for="p-telefono">Teléfono</label>
+          <input class="rv-input" id="p-telefono" type="tel" autocomplete="tel" aria-describedby="p-telefono-err"/>
+          <p class="rv-error" id="p-telefono-err"></p>
+        </div>
+        <div class="rv-two">
+          <div class="rv-field">
+            <label for="p-tipo">Tipo de usuario</label>
+            <input class="rv-input" id="p-tipo" type="text" value="Egresado" readonly/>
+          </div>
+          <div class="rv-field">
+            <label for="p-rol">Rol</label>
+            <input class="rv-input" id="p-rol" type="text" value="Usuario" readonly/>
+          </div>
+        </div>
+        <div class="rv-actions">
+          <button class="rv-btn rv-btn--primary" type="submit">Guardar (demostración)</button>
+          <button class="rv-btn rv-btn--ghost" type="button" id="btn-cancelar-perfil">Cancelar</button>
+        </div>
+      </form>
+
+      <button class="rv-btn" type="button" id="btn-editar-perfil">Editar perfil</button>
+    </section>
+  </div>
+
+  <p class="rv-note">Los cambios del perfil son solo una demostración visual: no se guardan y al recargar la página vuelven los datos de ejemplo.</p>
+</main>
+</div>
+
+</div>
+</div>
+
+<div class="rv-toast-zone" id="rv-toast-zone" role="status" aria-live="polite"></div>
+<script src="../layout.js"></script>
+<script src="reservas-demo.js"></script>
+</body>
+</html>

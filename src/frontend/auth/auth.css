@@ -1,0 +1,406 @@
+/* ==========================================================================
+   SAICI · Acceso (Login, Registro, Recuperar, Verificar código, Restablecer)
+   Hoja de estilos compartida. Diseño fluido: móvil (390 px) y escritorio (1280 px).
+   ========================================================================== */
+
+:root {
+  --green-900: #113711;
+  --green-800: #174B2A;
+  --green-700: #27823D;   /* botón principal: contraste 4.9:1 con texto blanco */
+  --green-800-hover: #1E6A31;
+  --green-brand: #35AB35;
+  --ink: #111827;
+  --muted: #5F5E5A;
+  --label: #444441;
+  --line: #C7CCD3;
+  --field: #F7F8FA;
+  --bg: #E9ECEF;
+  --err: #B42318;
+  --err-bg: #FEF3F2;
+  --err-line: #F04438;
+  --ok: #1B6B2F;
+  --ok-bg: #EDF7EF;
+  --ok-line: #A6D8B0;
+  --focus: rgba(39, 130, 61, .38);
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+/* ---------- Estructura ------------------------------------------------- */
+
+.shell {
+  width: 100%;
+  max-width: 440px;
+  background: #fff;
+  border-radius: 15px;
+  outline: 1px solid #D7DCE3;
+  outline-offset: -1px;
+  overflow: hidden;
+}
+
+.brand-panel { display: none; }
+
+.form-side { padding: 28px 22px 20px; }
+
+.mobile-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.uceva-logo {
+  display: block;
+  flex: none;
+  width: auto;
+  height: 46px;
+  background: #fff;
+  object-fit: contain;
+}
+.mobile-brand > div { padding-left: 12px; border-left: 1px solid #E3E6EA; }
+.mobile-brand strong { display: block; color: var(--green-900); font-size: 18px; line-height: 1.2; }
+.mobile-brand span.tagline { display: block; color: var(--muted); font-size: 12px; }
+
+h1 {
+  margin: 0 0 4px;
+  color: var(--green-900);
+  font-size: 22px;
+  line-height: 1.25;
+  font-weight: 700;
+}
+.lead { margin: 0 0 20px; color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+.caption {
+  margin: 22px 0 0;
+  text-align: center;
+  color: #6B7280;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+@media (min-width: 900px) {
+  body { padding: 32px; }
+
+  .shell {
+    max-width: 960px;
+    display: grid;
+    grid-template-columns: 5fr 6fr;
+    min-height: 620px;
+  }
+
+  .brand-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 48px 44px;
+    color: #fff;
+    background: linear-gradient(150deg, #174B2A 0%, #368B47 100%);
+  }
+  .brand-panel .uceva-logo { width: 100%; max-width: 270px; height: auto; padding: 14px 18px; box-sizing: border-box; border-radius: 14px; }
+  .brand-panel h2 { margin: 20px 0 8px; font-size: 32px; line-height: 1.1; font-weight: 800; }
+  .brand-panel p { margin: 0; max-width: 28ch; color: #E1EFE3; font-size: 16px; line-height: 1.5; }
+  .brand-panel .proto { color: #CFE5D3; font-size: 12px; }
+
+  .mobile-brand { display: none; }
+
+  .form-side {
+    padding: 48px 56px 28px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  h1 { font-size: 26px; }
+  .lead { font-size: 14px; }
+}
+
+/* ---------- Formularios ------------------------------------------------ */
+
+.field { margin-bottom: 14px; }
+
+.field label,
+.field .label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--label);
+  font-size: 13px;
+  font-weight: 500;
+}
+.req-mark { color: var(--err); margin-left: 2px; }
+
+.input-wrap { position: relative; display: flex; }
+
+.control {
+  width: 100%;
+  height: 46px;
+  padding: 0 14px;
+  font: inherit;
+  font-size: 16px;            /* evita el zoom automático en iOS */
+  color: var(--ink);
+  background: var(--field);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  transition: border-color .15s, background-color .15s;
+}
+.control::placeholder { color: #8A8F98; }
+.control:hover { border-color: #9AA1AB; }
+.control:focus { outline: none; }
+.control:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 1px;
+  border-color: var(--green-700);
+  background: #fff;
+}
+.control.has-toggle { padding-right: 74px; }
+
+.field.is-invalid .control {
+  border-color: var(--err-line);
+  background: var(--err-bg);
+}
+.field.is-invalid .control:focus-visible {
+  outline-color: rgba(240, 68, 56, .35);
+  border-color: var(--err);
+}
+
+.pw-toggle {
+  position: absolute;
+  right: 4px;
+  top: 4px;
+  bottom: 4px;
+  min-width: 62px;
+  padding: 0 10px;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--green-700);
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.pw-toggle:hover { background: rgba(39, 130, 61, .08); }
+.pw-toggle:focus-visible { outline: 3px solid var(--focus); outline-offset: 0; }
+
+.hint { margin: 5px 0 0; color: var(--muted); font-size: 12px; line-height: 1.4; }
+
+/* Mensaje de error por campo */
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 6px 0 0;
+  color: var(--err);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.error[hidden] { display: none; }
+.error::before {
+  content: "!";
+  flex: none;
+  width: 16px;
+  height: 16px;
+  margin-top: 1px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--err);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Resumen arriba del formulario */
+.summary,
+.flash {
+  margin: 0 0 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+}
+.summary[hidden], .flash[hidden] { display: none; }
+.summary {
+  color: #7A271A;
+  background: var(--err-bg);
+  border: 1px solid #FDA29B;
+  border-left: 4px solid var(--err);
+}
+.summary:focus { outline: none; }
+.summary-title { margin: 0 0 6px; font-weight: 700; }
+.summary ul { margin: 0; padding-left: 18px; }
+.summary a { color: #7A271A; font-weight: 600; text-underline-offset: 2px; }
+.summary a:focus-visible { outline: 3px solid rgba(240, 68, 56, .35); border-radius: 3px; }
+
+.flash { color: var(--ok); background: var(--ok-bg); border: 1px solid var(--ok-line); border-left: 4px solid var(--ok); font-weight: 500; }
+
+.demo-note {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  color: #5F5E5A;
+  background: #F4F6F8;
+  border: 1px dashed #B8BEC7;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.demo-note strong { color: var(--ink); }
+.demo-note code { padding: 1px 5px; background: #fff; border: 1px solid #D7DCE3; border-radius: 4px; font-size: 12px; }
+
+/* Casilla de aceptación */
+.check { display: flex; align-items: flex-start; gap: 10px; }
+.check input {
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+  accent-color: var(--green-700);
+  cursor: pointer;
+}
+.check input:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.check label { margin: 0; font-size: 13px; font-weight: 400; color: var(--muted); cursor: pointer; }
+.field.is-invalid .check input { outline: 2px solid var(--err-line); outline-offset: 2px; }
+
+/* Requisitos de contraseña */
+.reqs { margin: 0 0 14px; padding: 0; list-style: none; display: grid; gap: 4px; }
+.reqs li { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+.req-icon {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1.5px solid #9AA1AB;
+  font-size: 10px;
+  font-weight: 800;
+  color: transparent;
+}
+.reqs li.is-met { color: var(--ok); font-weight: 500; }
+.reqs li.is-met .req-icon { border-color: var(--ok); background: var(--ok); color: #fff; }
+
+/* ---------- Botones y enlaces ------------------------------------------ */
+
+.btn {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #fff;
+  background: var(--green-700);
+  border: 1px solid var(--green-700);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color .15s;
+}
+.btn:hover { background: var(--green-800-hover); border-color: var(--green-800-hover); }
+.btn:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+.btn[disabled] { opacity: .65; cursor: wait; }
+
+.btn-outline { color: var(--green-700); background: #fff; }
+.btn-outline:hover { color: #fff; }
+
+.link {
+  color: var(--green-700);
+  font-weight: 700;
+  text-decoration: none;
+  text-underline-offset: 3px;
+}
+.link:hover { text-decoration: underline; }
+.link:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 3px; }
+
+button.link {
+  padding: 0;
+  font: inherit;
+  font-weight: 700;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+button.link[disabled] { color: #6B7280; cursor: not-allowed; text-decoration: none; }
+
+.row-end { display: flex; justify-content: flex-end; margin: -4px 0 16px; font-size: 13px; }
+.center { text-align: center; }
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 22px 0 14px;
+  color: #6B7280;
+  font-size: 12px;
+}
+.divider::before, .divider::after { content: ""; flex: 1; height: 1px; background: #E3E6EA; }
+.divider-text { margin: 0 0 10px; text-align: center; color: var(--muted); font-size: 13px; }
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  margin: -1px; padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Pasos de recuperación -------------------------------------- */
+
+.steps { margin: 0 0 20px; padding: 0; list-style: none; display: flex; gap: 8px; }
+.steps li { flex: 1; display: flex; flex-direction: column; gap: 6px; color: #6B7280; font-size: 11px; line-height: 1.3; }
+.steps li::before { content: ""; height: 4px; border-radius: 2px; background: #DDE1E6; }
+.steps li.is-done::before, .steps li.is-current::before { background: var(--green-700); }
+.steps li.is-current { color: var(--green-900); font-weight: 700; }
+.steps li.is-done { color: var(--ok); }
+
+/* ---------- Código de verificación (OTP) ------------------------------- */
+
+.otp { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; }
+.otp .control { height: 56px; padding: 0; text-align: center; font-size: 22px; font-weight: 700; }
+.otp.is-invalid .control { border-color: var(--err-line); background: var(--err-bg); }
+
+.resend { margin: 14px 0 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; color: var(--muted); font-size: 13px; }
+.status { min-height: 18px; margin: 0 0 12px; color: var(--ok); font-size: 13px; font-weight: 500; }
+
+/* ---------- Estado de éxito -------------------------------------------- */
+
+.success { text-align: center; padding: 8px 0; }
+.success[hidden] { display: none; }
+.success .tick {
+  width: 56px; height: 56px; margin: 0 auto 14px;
+  display: grid; place-items: center;
+  border-radius: 50%; background: var(--ok-bg); border: 2px solid var(--ok);
+  color: var(--ok); font-size: 26px; font-weight: 800;
+}
+.success h2 { margin: 0 0 6px; color: var(--green-900); font-size: 20px; }
+.success p { margin: 0 0 20px; color: var(--muted); font-size: 13px; }
+
+.stack-gap { margin-top: 16px; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* Botones consecutivos (p. ej. registro y acceso de laboratorio) */
+.btn + .btn { margin-top: 10px; }

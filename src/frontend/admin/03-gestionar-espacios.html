@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Gestión de espacios · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<link href="Demo_forms.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap">
+<div class="app-frame">
+<div class="app-content demo-screen">
+<div class="df-head">
+<div class="screen-heading"><h1>Gestión de espacios</h1><p>Catálogo administrativo de laboratorios y biblioteca.</p></div>
+<button class="demo-link" id="btn-new" type="button">+ Crear espacio</button>
+</div>
+<div class="prototype-notice">Modo demostración: los formularios no guardan ni modifican información real.</div>
+<div class="df-root" id="root"></div>
+</div>
+</div>
+</div>
+<script src="../layout.js"></script>
+<script src="Demo_forms.js"></script>
+<script>
+var rows = [
+  { nombre: 'Laboratorio de Sistemas 1', tipo: 'Laboratorio', ubicacion: 'Edificio de Sistemas', capacidad: 24, estado: 'Activo', descripcion: '' },
+  { nombre: 'Sala de estudio biblioteca', tipo: 'Biblioteca', ubicacion: 'Biblioteca central', capacidad: 8, estado: 'Activo', descripcion: '' },
+  { nombre: 'Laboratorio de Redes', tipo: 'Laboratorio', ubicacion: 'Bloque académico', capacidad: 20, estado: 'Inactivo', descripcion: '' }
+];
+DemoCrud({
+  root: '#root', newBtn: '#btn-new', noun: 'espacio', rows: rows,
+  rowName: function (r) { return r.nombre; },
+  columns: [
+    { key: 'nombre', label: 'Nombre' }, { key: 'tipo', label: 'Tipo' },
+    { key: 'ubicacion', label: 'Ubicación' }, { key: 'capacidad', label: 'Capacidad' },
+    { key: 'estado', label: 'Estado', badge: true }
+  ],
+  fields: [
+    { id: 'nombre', label: 'Nombre del espacio', required: true, hint: 'Entre 3 y 60 caracteres.',
+      validate: function (v, all, cur) {
+        if (v.length < 3) return 'El nombre es muy corto: escribe al menos 3 caracteres.';
+        if (v.length > 60) return 'El nombre es muy largo: usa máximo 60 caracteres.';
+        var dup = rows.some(function (r) { return r !== cur && r.nombre.toLowerCase() === v.toLowerCase(); });
+        return dup ? 'Ya existe un espacio con ese nombre. Usa uno diferente.' : '';
+      } },
+    { id: 'tipo', label: 'Tipo', type: 'select', required: true, options: ['Laboratorio', 'Biblioteca', 'Aula', 'Auditorio'],
+      requiredMsg: 'Selecciona el tipo de espacio.' },
+    { id: 'ubicacion', label: 'Ubicación', required: true, hint: 'Edificio o bloque donde se encuentra.',
+      validate: function (v) { return v.length < 3 ? 'La ubicación es muy corta: indica el edificio o bloque.' : ''; } },
+    { id: 'capacidad', label: 'Capacidad (personas)', type: 'number', required: true, hint: 'Número entero entre 1 y 200.',
+      validate: function (v) {
+        var n = Number(v);
+        if (!Number.isInteger(n)) return 'La capacidad debe ser un número entero, sin decimales.';
+        return n < 1 || n > 200 ? 'La capacidad debe estar entre 1 y 200 personas.' : '';
+      } },
+    { id: 'estado', label: 'Estado', type: 'select', required: true, options: ['Activo', 'Inactivo'] },
+    { id: 'descripcion', label: 'Descripción (opcional)', type: 'textarea', wide: true, hint: 'Máximo 200 caracteres.',
+      validate: function (v) { return v.length > 200 ? 'La descripción supera los 200 caracteres (' + v.length + '). Acórtala.' : ''; } }
+  ]
+});
+</script>
+</body>
+</html>

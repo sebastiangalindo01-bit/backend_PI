@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Explorar espacios · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap">
+<div class="app-frame is-scrollable">
+<div class="app-content">
+
+  <!--@jec: Header -->
+  <div style="align-self: stretch; padding-bottom: 22px; gap: 16px; display: flex;">
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px;">
+      <h1 style="margin: 0; color: #193A22; font-size: 23px; font-weight: 700; line-height: 27.6px;">Explorar espacios</h1>
+      <div style="color: #6B756D; font-size: 13px; font-weight: 400; line-height: 19.5px;">Busca espacios por nombre, ubicación, tipo o recurso. La disponibilidad mostrada es ilustrativa.</div>
+    </div>
+  </div>
+
+  <!--@jec: Filtros -->
+  <div style="width: 100%; display: flex; gap: 12px; margin-bottom: 20px; min-height: 60px;">
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px;">
+      <label for="space-search" style="color: #4D584F; font-size: 11px; font-weight: 600;">Buscar espacio</label>
+      <input id="space-search" type="search" placeholder="Nombre, ubicación o recurso"
+             style="width: 100%; height: 40px; padding: 0 11px; background: white; color: #343B35; font-size: 12px; border: 1px solid #D7DFD7; border-radius: 7px; box-sizing: border-box; outline: none;">
+    </div>
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px;">
+      <label for="space-type" style="color: #4D584F; font-size: 11px; font-weight: 600;">Tipo de espacio</label>
+      <select id="space-type"
+              style="width: 100%; height: 40px; padding: 0 11px; background: white; color: #343B35; font-size: 12px; border: 1px solid #D7DFD7; border-radius: 7px; box-sizing: border-box; outline: none;">
+        <option value="Todos">Todos</option>
+        <option value="Laboratorio">Laboratorio</option>
+        <option value="Sala de estudio">Sala de estudio</option>
+        <option value="Aula">Aula</option>
+        <option value="Sala">Sala</option>
+        <option value="Auditorio">Auditorio</option>
+      </select>
+    </div>
+
+    <div style="flex: 1 1 0; display: flex; flex-direction: column; gap: 6px;">
+      <label for="space-availability" style="color: #4D584F; font-size: 11px; font-weight: 600;">Disponibilidad</label>
+      <select id="space-availability"
+              style="width: 100%; height: 40px; padding: 0 11px; background: white; color: #343B35; font-size: 12px; border: 1px solid #D7DFD7; border-radius: 7px; box-sizing: border-box; outline: none;">
+        <option value="Todas">Todas</option>
+        <option value="Disponible">Disponible</option>
+        <option value="Ocupado">Ocupado</option>
+      </select>
+    </div>
+  </div>
+
+  <!--@jec: Resumen -->
+  <div id="results-summary" style="align-self: stretch; color: #6B756D; font-size: 12px; font-weight: 500;">Cargando espacios...</div>
+
+  <!--@jec: Grid -->
+  <div id="spaces-grid" class="spaces-grid"></div>
+
+  <!--@jec: Estado vacío -->
+  <div id="empty-state" class="empty-state is-hidden" style="margin-top: 8px;">
+    <div class="empty-state__title">No encontramos espacios con esos criterios</div>
+    <div class="empty-state__description">Prueba con otra búsqueda o cambia los filtros.</div>
+  </div>
+
+</div>
+</div>
+</div>
+
+<script src="../spaces.js"></script>
+<script src="../layout.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var api = window.SAICI && window.SAICI.spaces;
+  if (!api) return;
+
+  var searchInput        = document.getElementById('space-search');
+  var typeSelect         = document.getElementById('space-type');
+  var availabilitySelect = document.getElementById('space-availability');
+  var resultsSummary     = document.getElementById('results-summary');
+  var spacesGrid         = document.getElementById('spaces-grid');
+  var emptyState         = document.getElementById('empty-state');
+
+  function createCard(space) {
+    var card = document.createElement('article');
+    card.className = 'space-card';
+
+    var header = document.createElement('div');
+    header.className = 'space-card__header';
+    header.style.background = space.color;
+
+    var icon = document.createElement('div');
+    icon.className = 'space-card__icon';
+    icon.style.color = space.accent;
+    icon.textContent = space.icon;
+    header.appendChild(icon);
+
+    var body = document.createElement('div');
+    body.className = 'space-card__body';
+
+    var type = document.createElement('div');
+    type.className = 'space-card__type';
+    type.textContent = space.type;
+
+    var title = document.createElement('h2');
+    title.className = 'space-card__title';
+    title.textContent = space.name;
+
+    var location = document.createElement('p');
+    location.className = 'space-card__location';
+    location.textContent = '📍 ' + space.location;
+
+    var capacity = document.createElement('p');
+    capacity.className = 'space-card__capacity';
+    capacity.textContent = '👥 Capacidad: ' + space.capacity + ' personas';
+
+    var resources = document.createElement('p');
+    resources.className = 'space-card__resources';
+    resources.textContent = 'Recursos: ' + space.resources;
+
+    var footer = document.createElement('div');
+    footer.className = 'space-card__footer';
+
+    var status = document.createElement('div');
+    status.className = space.availability === 'Disponible'
+      ? 'space-card__status space-card__status--available'
+      : 'space-card__status space-card__status--busy';
+    status.textContent = space.status;
+
+    var link = document.createElement('a');
+    link.className = 'space-card__button';
+    link.href = '03-detalle-espacio.html?id=' + encodeURIComponent(space.id);
+    link.textContent = 'Ver detalle';
+
+    footer.appendChild(status);
+    footer.appendChild(link);
+
+    body.appendChild(type);
+    body.appendChild(title);
+    body.appendChild(location);
+    body.appendChild(capacity);
+    body.appendChild(resources);
+    body.appendChild(footer);
+
+    card.appendChild(header);
+    card.appendChild(body);
+    return card;
+  }
+
+  function renderSpaces() {
+    var results = api.filterSpaces({
+      query: searchInput.value,
+      type: typeSelect.value,
+      availability: availabilitySelect.value
+    });
+
+    spacesGrid.innerHTML = '';
+
+    var plural = results.length === 1 ? '' : 's';
+    resultsSummary.textContent = results.length + ' espacio' + plural + ' encontrado' + plural;
+
+    if (results.length === 0) {
+      emptyState.classList.remove('is-hidden');
+    } else {
+      emptyState.classList.add('is-hidden');
+    }
+
+    results.forEach(function (space) {
+      spacesGrid.appendChild(createCard(space));
+    });
+  }
+
+  searchInput.addEventListener('input', renderSpaces);
+  typeSelect.addEventListener('change', renderSpaces);
+  availabilitySelect.addEventListener('change', renderSpaces);
+
+  renderSpaces();
+})();
+</script>
+</body>
+</html>

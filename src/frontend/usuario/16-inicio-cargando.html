@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Cargando inicio · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <section class="page-hero">
+      <div><h1>Hola, Laura Andrea</h1><p>Tu inicio está cargando.</p></div>
+      <img class="page-hero__art" src="../assets/ilustraciones/reloj.svg" alt="" width="240" height="180">
+    </section>
+    <div class="prototype-notice" role="status" aria-live="polite">Cargando la información de muestra. No se está consultando ningún servicio.</div>
+    <section class="stat-grid" aria-label="Resumen cargando">
+      <div class="stat-card"><span class="stat-card__label">Espacios disponibles</span><div class="demo-skeleton" aria-hidden="true"></div></div>
+      <div class="stat-card"><span class="stat-card__label">Próximas reservas</span><div class="demo-skeleton" aria-hidden="true"></div></div>
+      <div class="stat-card"><span class="stat-card__label">Resumen</span><div class="demo-skeleton" aria-hidden="true"></div></div>
+    </section>
+    <h2 class="section-title">Espacios destacados</h2>
+    <div class="spaces-grid" aria-hidden="true">
+      <div class="demo-skeleton demo-skeleton--tall"></div><div class="demo-skeleton demo-skeleton--tall"></div><div class="demo-skeleton demo-skeleton--tall"></div>
+    </div>
+    <div class="demo-actions">
+      <a class="demo-link" href="01-inicio.html">Continuar al inicio</a>
+      <a class="demo-link is-secondary" href="17-error-inicio.html">Ver ejemplo de error</a>
+    </div>
+  </main>
+</div></div>
+<script src="../layout.js"></script>
+</body>
+</html>

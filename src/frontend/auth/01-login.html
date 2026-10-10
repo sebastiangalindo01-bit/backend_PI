@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iniciar sesión · SAICI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body data-page="login">
+<main class="shell">
+  <aside class="brand-panel" aria-hidden="true">
+    <div>
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="">
+      <h2>SAICI</h2>
+      <p>Reserva de laboratorios para egresados</p>
+    </div>
+    <p class="proto">Prototipo · datos de ejemplo</p>
+  </aside>
+
+  <div class="form-side">
+    <header class="mobile-brand">
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="UCEVA · Unidad Central del Valle del Cauca">
+      <div><strong>SAICI</strong><span class="tagline">Reserva de laboratorios para egresados</span></div>
+    </header>
+
+    <h1>Iniciar sesión</h1>
+    <p class="lead">Ingresa con tu correo institucional</p>
+
+    <p class="flash" id="flash" role="status" hidden></p>
+
+    <form id="login-form" novalidate>
+      <div class="summary" role="alert" tabindex="-1" hidden></div>
+      <div class="field" data-field="email">
+        <label for="email">Correo electrónico</label>
+        <input class="control" id="email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" aria-describedby="email-error" inputmode="email" autocapitalize="none" spellcheck="false">
+        <p class="error" id="email-error" hidden></p>
+      </div>
+      <div class="field" data-field="password">
+        <label for="password">Contraseña</label>
+        <div class="input-wrap">
+          <input class="control has-toggle" id="password" name="password" type="password" placeholder="••••••••" autocomplete="current-password" aria-describedby="password-error" >
+          <button type="button" class="pw-toggle" data-toggle-password="password" data-label="contraseña" aria-pressed="false" aria-label="Mostrar contraseña">Ver</button>
+        </div>
+        <p class="error" id="password-error" hidden></p>
+      </div>
+      <div class="row-end"><a class="link" href="03-recuperar-solicitar-codigo.html">¿Olvidaste tu contraseña?</a></div>
+      <button class="btn" type="submit" id="btn-submit">Ingresar</button>
+    </form>
+
+    <p class="demo-note"><strong>Modo demostración.</strong> Escribe cualquier correo válido y cualquier contraseña para entrar. Con un correo que empiece por <code>admin</code> entras al panel administrativo.</p>
+
+    <div class="divider" aria-hidden="true">o</div>
+    <p class="divider-text">¿No tienes una cuenta?</p>
+    <a class="btn btn-outline" href="02-registro-egresado.html">Registrarme como egresado</a>
+    <a class="btn btn-outline" href="../laboratorio/01-panel.html">Acceso estudiante de laboratorio</a>
+
+    <p class="caption">GUI-02 - Login | CU-01 Iniciar sesión | HU-01</p>
+  </div>
+</main>
+<script src="auth.js"></script>
+</body>
+</html>

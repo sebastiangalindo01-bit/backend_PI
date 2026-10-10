@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nueva contraseña · SAICI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body data-page="reset">
+<main class="shell">
+  <aside class="brand-panel" aria-hidden="true">
+    <div>
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="">
+      <h2>SAICI</h2>
+      <p>Reserva de laboratorios para egresados</p>
+    </div>
+    <p class="proto">Prototipo · datos de ejemplo</p>
+  </aside>
+
+  <div class="form-side">
+    <header class="mobile-brand">
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="UCEVA · Unidad Central del Valle del Cauca">
+      <div><strong>SAICI</strong><span class="tagline">Reserva de laboratorios para egresados</span></div>
+    </header>
+
+    <ol class="steps" aria-label="Progreso de recuperación">
+      <li class="is-done">Solicitar código</li>
+      <li class="is-done">Verificar código</li>
+      <li class="is-current" aria-current="step">Nueva contraseña</li>
+    </ol>
+
+    <div id="reset-intro">
+      <h1>Crea una nueva contraseña</h1>
+      <p class="lead">Debe tener mínimo 8 caracteres.</p>
+    </div>
+
+    <form id="reset-form" novalidate>
+      <div class="summary" role="alert" tabindex="-1" hidden></div>
+      <div class="field" data-field="password">
+        <label for="password">Nueva contraseña</label>
+        <div class="input-wrap">
+          <input class="control has-toggle" id="password" name="password" type="password" placeholder="••••••••" autocomplete="new-password" aria-describedby="password-error" >
+          <button type="button" class="pw-toggle" data-toggle-password="password" data-label="nueva contraseña" aria-pressed="false" aria-label="Mostrar nueva contraseña">Ver</button>
+        </div>
+        <p class="error" id="password-error" hidden></p>
+      </div>
+      <div class="field" data-field="confirm">
+        <label for="confirm">Confirmar contraseña</label>
+        <div class="input-wrap">
+          <input class="control has-toggle" id="confirm" name="confirm" type="password" placeholder="••••••••" autocomplete="new-password" aria-describedby="confirm-error" >
+          <button type="button" class="pw-toggle" data-toggle-password="confirm" data-label="confirmación de contraseña" aria-pressed="false" aria-label="Mostrar confirmación de contraseña">Ver</button>
+        </div>
+        <p class="error" id="confirm-error" hidden></p>
+      </div>
+      <ul class="reqs" aria-label="Requisitos de la contraseña">
+        <li data-req="length"><span class="req-icon" aria-hidden="true"></span><span class="sr-only req-state">Pendiente: </span>Mínimo 8 caracteres</li>
+        <li data-req="match"><span class="req-icon" aria-hidden="true"></span><span class="sr-only req-state">Pendiente: </span>Las dos contraseñas coinciden</li>
+      </ul>
+      <button class="btn" type="submit" id="btn-submit">Guardar contraseña</button>
+    </form>
+
+    <div class="success" id="success" role="status" hidden>
+      <div class="tick" aria-hidden="true">✓</div>
+      <h2>Contraseña actualizada</h2>
+      <p>Tu nueva contraseña quedó guardada (demostración).</p>
+      <a class="btn" id="go-login" href="01-login.html?reset=ok">Ir a iniciar sesión</a>
+    </div>
+
+    <p class="caption">CU-06 Recuperar contraseña | token temporal</p>
+  </div>
+</main>
+<script src="auth.js"></script>
+</body>
+</html>

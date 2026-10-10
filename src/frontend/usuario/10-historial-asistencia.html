@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Historial de asistencia · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+  <link href="../styles.css" rel="stylesheet"/>
+  <link href="../attendance.css" rel="stylesheet"/>
+  <style>
+    .attendance-page { width: 100%; }
+    .attendance-heading { margin-bottom: 20px; }
+    .attendance-heading h1 { margin: 0 0 6px; color: #193a22; font-size: 23px; }
+    .attendance-heading p { margin: 0; color: #727c73; font-size: 12px; line-height: 1.6; }
+    .attendance-notice {
+      margin-bottom: 18px;
+      padding: 12px 14px;
+      border: 1px solid #f0e2b8;
+      border-radius: 8px;
+      background: #fff7df;
+      color: #6c571e;
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .attendance-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+    .attendance-stat {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid #e4eae4;
+      border-radius: 12px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(18, 59, 34, 0.04);
+    }
+    .attendance-stat dt { margin-bottom: 8px; color: #707a71; font-size: 12px; }
+    .attendance-stat dd { margin: 0; color: #193a22; font-size: 20px; font-weight: 700; }
+    .attendance-records h2 { margin: 0 0 12px; color: #193a22; font-size: 16px; }
+    .attendance-table-wrap { overflow: hidden; border: 1px solid #e4eae4; border-radius: 10px; background: white; }
+    .attendance-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .attendance-table th,
+    .attendance-table td { padding: 13px 14px; border-bottom: 1px solid #edf0ed; font-size: 12px; }
+    .attendance-table th { background: #f8faf8; color: #657067; font-size: 11px; font-weight: 700; }
+    .attendance-table td { color: #38423a; }
+    .attendance-table tbody tr:last-child td { border-bottom: 0; }
+    .attendance-empty { padding: 28px 18px !important; color: #657067 !important; text-align: center; line-height: 1.6; }
+    .screen-sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    @media (max-width: 700px) {
+      .attendance-summary { grid-template-columns: minmax(0, 1fr); gap: 10px; margin-bottom: 20px; }
+      .attendance-stat { padding: 14px 16px; }
+      .attendance-stat dd { font-size: 18px; }
+      .attendance-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .attendance-table,
+      .attendance-table tbody { display: block; }
+      .attendance-table tbody { padding: 10px; }
+      .attendance-table tbody tr {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 12px;
+        border: 1px solid #edf0ed;
+        border-radius: 8px;
+      }
+      .attendance-table tbody tr:last-child { margin-bottom: 0; }
+      .attendance-table td { display: flex; min-width: 0; flex-direction: column; gap: 4px; padding: 0; border: 0; overflow-wrap: anywhere; }
+      .attendance-table td:first-child { grid-column: 1 / -1; }
+      .attendance-table td::before { content: attr(data-label); color: #657067; font-size: 10px; font-weight: 700; }
+      .attendance-table .attendance-empty { display: block; grid-column: 1 / -1; padding: 14px !important; }
+    }
+  </style>
+</head>
+<body class="attendance-screen">
+  <div class="wrap attendance-wrap">
+    <div class="app-frame attendance-shell">
+      <main class="app-content demo-screen attendance-content">
+        <div class="attendance-page">
+          <header class="attendance-heading">
+            <h1>Historial de asistencia</h1>
+            <p>Consulta tus horas y visitas. Los datos que aparecen aquí son solo ejemplos.</p>
+          </header>
+
+          <div class="attendance-notice" role="note">
+            Historial de demostración: estos registros no corresponden a asistencias reales.
+          </div>
+
+          <dl class="attendance-summary" aria-label="Resumen de asistencia de ejemplo">
+            <div class="attendance-stat">
+              <dt>Horas acumuladas (ejemplo)</dt>
+              <dd id="total-hours">0 h</dd>
+            </div>
+            <div class="attendance-stat">
+              <dt>Visitas de ejemplo</dt>
+              <dd id="visit-count">0</dd>
+            </div>
+            <div class="attendance-stat">
+              <dt>Período</dt>
+              <dd id="attendance-period">Sin registros</dd>
+            </div>
+          </dl>
+
+          <section class="attendance-records" aria-labelledby="records-title">
+            <h2 id="records-title">Registros de ejemplo</h2>
+            <div class="attendance-table-wrap">
+              <table class="attendance-table">
+                <caption class="screen-sr-only">Registros de asistencia ficticios para demostración</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Laboratorio</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Entrada</th>
+                    <th scope="col">Salida</th>
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody id="attendance-records"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../layout.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var samples = [
+        { daysAgo: 1, laboratory: 'Laboratorio de Sistemas 1', entry: '09:00', exit: '12:00' },
+        { daysAgo: 2, laboratory: 'Laboratorio de Redes', entry: '13:00', exit: '16:00' },
+        { daysAgo: 3, laboratory: 'Laboratorio de Electrónica', entry: '08:00', exit: '11:00' },
+        { daysAgo: 4, laboratory: 'Laboratorio de Sistemas 1', entry: '10:00', exit: '13:00' }
+      ];
+      var tableBody = document.getElementById('attendance-records');
+      var totalMinutes = 0;
+      var dates = [];
+
+      function formatDate(date) {
+        return new Intl.DateTimeFormat('es-CO', {
+          day: '2-digit',
+          month: 'short',
+          year: 'numeric'
+        }).format(date).replace('.', '');
+      }
+
+      function durationBetween(entry, exit) {
+        var entryParts = entry.split(':');
+        var exitParts = exit.split(':');
+        var minutes = (Number(exitParts[0]) * 60 + Number(exitParts[1])) -
+          (Number(entryParts[0]) * 60 + Number(entryParts[1]));
+        var hours = Math.floor(minutes / 60);
+        var remainingMinutes = minutes % 60;
+        return {
+          minutes: minutes,
+          label: hours + ' h' + (remainingMinutes ? ' ' + remainingMinutes + ' min' : '')
+        };
+      }
+
+      function addCell(row, label, value) {
+        var cell = document.createElement('td');
+        cell.setAttribute('data-label', label);
+        cell.textContent = value;
+        row.appendChild(cell);
+      }
+
+      if (!samples.length) {
+        var emptyRow = document.createElement('tr');
+        var emptyCell = document.createElement('td');
+        emptyCell.className = 'attendance-empty';
+        emptyCell.colSpan = 5;
+        emptyCell.textContent = 'Aún no hay registros de asistencia. Cuando haya datos de demostración, aparecerán aquí.';
+        emptyRow.appendChild(emptyCell);
+        tableBody.appendChild(emptyRow);
+      } else {
+        samples.forEach(function (sample) {
+          var date = new Date();
+          date.setHours(0, 0, 0, 0);
+          date.setDate(date.getDate() - sample.daysAgo);
+          dates.push(date);
+
+          var duration = durationBetween(sample.entry, sample.exit);
+          totalMinutes += duration.minutes;
+
+          var row = document.createElement('tr');
+          addCell(row, 'Laboratorio', sample.laboratory);
+          addCell(row, 'Fecha', formatDate(date));
+          addCell(row, 'Entrada', sample.entry);
+          addCell(row, 'Salida', sample.exit);
+          addCell(row, 'Total', duration.label);
+          tableBody.appendChild(row);
+        });
+      }
+
+      var totalHours = Math.floor(totalMinutes / 60);
+      var remainingMinutes = totalMinutes % 60;
+      document.getElementById('total-hours').textContent =
+        totalHours + ' h' + (remainingMinutes ? ' ' + remainingMinutes + ' min' : '');
+      document.getElementById('visit-count').textContent = String(samples.length);
+
+      if (dates.length) {
+        document.getElementById('attendance-period').textContent =
+          new Intl.DateTimeFormat('es-CO', { month: 'long', year: 'numeric' }).format(dates[0]);
+      }
+    }());
+  </script>
+</body>
+</html>

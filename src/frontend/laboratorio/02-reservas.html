@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reservas asignadas · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="../styles.css" rel="stylesheet">
+  <style>
+    .lab-page-head { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 22px; }
+    .lab-page-head h1 { margin: 0 0 6px; color: #193A22; font-size: 23px; }
+    .lab-page-head p { margin: 0; color: #6B756D; font-size: 13px; line-height: 1.5; }
+    .lab-table-wrap { overflow-x: auto; background: white; border: 1px solid #E4EAE4; border-radius: 10px; }
+    .lab-table { width: 100%; min-width: 620px; border-collapse: collapse; font-size: 12px; }
+    .lab-table th, .lab-table td { padding: 14px; text-align: left; border-bottom: 1px solid #EDF0ED; }
+    .lab-table th { color: #657067; background: #F8FAF8; font-size: 10px; }
+    .lab-table td { color: #38423A; }
+    .lab-table tr:last-child td { border-bottom: 0; }
+    .lab-status { display: inline-block; padding: 5px 8px; border-radius: 20px; background: #E8F5E9; color: #246D38; font-weight: 700; font-size: 10px; }
+    .lab-cta { flex: none; min-width: 190px; }
+    @media (max-width: 700px) {
+      .lab-page-head { flex-direction: column; }
+      .lab-cta { width: 100%; box-sizing: border-box; }
+      .lab-table { min-width: 0; }
+      .lab-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+      .lab-table, .lab-table tbody, .lab-table tr, .lab-table td { display: block; }
+      .lab-table tr { padding: 14px 16px; border-bottom: 1px solid #EDF0ED; }
+      .lab-table tr:last-child { border-bottom: 0; }
+      .lab-table td { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border: 0; }
+      .lab-table td::before { content: attr(data-label); color: #657067; font-size: 11px; font-weight: 700; text-transform: uppercase; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="app-frame">
+      <main class="app-content demo-screen">
+        <header class="lab-page-head">
+          <div><h1>Reservas asignadas</h1><p>Datos de ejemplo del estudiante de laboratorio.</p></div>
+          <a class="demo-link lab-cta" href="../usuario/02-explorar-espacios.html">Solicitar espacio</a>
+        </header>
+        <div class="lab-table-wrap">
+          <table class="lab-table">
+            <thead><tr><th>Espacio</th><th>Fecha</th><th>Horario</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td data-label="Espacio">Laboratorio de Sistemas 1</td><td data-label="Fecha">20 oct 2026</td><td data-label="Horario">10:00 – 12:00</td><td data-label="Estado"><span class="lab-status">Confirmada</span></td></tr>
+              <tr><td data-label="Espacio">Laboratorio de Redes</td><td data-label="Fecha">22 oct 2026</td><td data-label="Horario">14:00 – 16:00</td><td data-label="Estado"><span class="lab-status">Confirmada</span></td></tr>
+              <tr><td data-label="Espacio">Sala de estudio biblioteca</td><td data-label="Fecha">24 oct 2026</td><td data-label="Horario">08:00 – 10:00</td><td data-label="Estado"><span class="lab-status">Pendiente</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+  <script src="../layout.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Historial de reservas · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<link href="reservas.css" rel="stylesheet"/>
+</head>
+<body class="rv" data-page="historial">
+<div class="wrap">
+<div class="app-frame">
+
+<div class="app-content">
+<main class="rv-page">
+
+  <div class="rv-head">
+    <div>
+      <h1 class="rv-title">Historial de reservas</h1>
+      <p class="rv-sub">Encuentra reservas anteriores por fecha, espacio o estado.</p>
+    </div>
+  </div>
+
+  <form class="rv-filters" id="form-filtros" role="search" aria-label="Filtrar historial de reservas">
+    <div class="rv-field">
+      <label for="f-desde">Desde</label>
+      <input class="rv-input" id="f-desde" type="date" aria-describedby="f-rango-err"/>
+    </div>
+    <div class="rv-field">
+      <label for="f-hasta">Hasta</label>
+      <input class="rv-input" id="f-hasta" type="date" aria-describedby="f-rango-err"/>
+    </div>
+    <div class="rv-field">
+      <label for="f-espacio">Espacio</label>
+      <select class="rv-select" id="f-espacio"></select>
+    </div>
+    <div class="rv-field">
+      <label for="f-estado">Estado</label>
+      <select class="rv-select" id="f-estado"></select>
+    </div>
+    <div class="rv-filters__actions">
+      <button class="rv-btn rv-btn--ghost" type="button" id="btn-limpiar">Limpiar filtros</button>
+    </div>
+    <p class="rv-error rv-filters__error" id="f-rango-err" role="alert"></p>
+  </form>
+
+  <p class="rv-count" id="rv-count" tabindex="-1" aria-live="polite"></p>
+  <div class="rv-list" id="rv-list" role="table" aria-label="Historial de reservas"></div>
+
+  <p class="rv-note">Los registros de esta pantalla son datos de demostración.</p>
+</main>
+</div>
+
+</div>
+</div>
+<script src="../layout.js"></script>
+<script src="reservas-demo.js"></script>
+</body>
+</html>
