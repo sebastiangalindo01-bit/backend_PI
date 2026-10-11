@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Usuarios del sistema · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<style>
+  /* Estilos propios de esta pantalla (prefijo uv-) para no afectar a las demás */
+
+  /* Cada bloque ocupa todo el ancho de .app-content */
+  .uv-head, .uv-filters, .uv-bar, .uv-card {
+    align-self: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .uv-head { padding-bottom: 22px; }
+  .uv-title { margin: 0 0 6px; color: #193A22; font: 700 23px/1.2 Inter, sans-serif; }
+  .uv-sub { margin: 0; color: #6B756D; font: 400 13px/1.5 Inter, sans-serif; }
+
+  .uv-filters {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+    padding-bottom: 14px;
+  }
+  .uv-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .uv-field label { color: #4D584F; font: 600 11px/1.2 Inter, sans-serif; }
+  .uv-input {
+    height: 40px; width: 100%; box-sizing: border-box;
+    padding: 0 11px; background: #fff; color: #343B35;
+    border: 1px solid #D7DFD7; border-radius: 7px;
+    font: 400 12px Inter, sans-serif;
+  }
+  .uv-input:focus-visible, .uv-btn:focus-visible, .uv-clear:focus-visible, .uv-dialog button:focus-visible {
+    outline: 2px solid #27823D; outline-offset: 2px;
+  }
+
+  .uv-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; padding-bottom: 12px; min-height: 28px;
+    color: #6B756D; font: 500 12px Inter, sans-serif;
+  }
+  .uv-clear {
+    background: none; border: 0; padding: 6px 4px; cursor: pointer;
+    color: #247238; font: 700 12px Inter, sans-serif; text-decoration: underline;
+  }
+  .uv-clear[hidden] { display: none; }
+
+  .uv-card { background: #fff; border: 1px solid #E4EAE4; border-radius: 10px; overflow: hidden; }
+  .uv-scroll { overflow-x: auto; }
+  .uv-table { width: 100%; border-collapse: collapse; }
+  .uv-table th {
+    background: #F8FAF8; color: #657067; text-align: left;
+    padding: 13px 14px; border-bottom: 1px solid #EDF0ED;
+    font: 700 10px/1.2 Inter, sans-serif;
+  }
+  .uv-table td {
+    padding: 13px 14px; border-bottom: 1px solid #EDF0ED;
+    color: #38423A; font: 400 11px/1.3 Inter, sans-serif; vertical-align: middle;
+    overflow-wrap: anywhere;
+  }
+  .uv-table tbody tr:last-child td { border-bottom: 0; }
+
+  .uv-badge {
+    display: inline-block; padding: 5px 8px; border-radius: 20px;
+    font: 700 10px/1.2 Inter, sans-serif;
+  }
+  .uv-badge.activo   { background: #E8F5E9; color: #246D38; }
+  .uv-badge.inactivo { background: #EEF0EE; color: #5B655D; }
+
+  .uv-btn {
+    height: 38px; padding: 0 14px; border-radius: 7px; cursor: pointer;
+    border: 1px solid #27823D; background: #fff; color: #247238;
+    font: 700 12px Inter, sans-serif;
+  }
+  .uv-btn.primary { background: #27823D; color: #fff; }
+  .uv-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .uv-empty { padding: 36px 16px; text-align: center; color: #6B756D; font: 500 13px Inter, sans-serif; }
+  .uv-empty[hidden] { display: none; }
+
+  /* Diálogo de confirmación */
+  .uv-dialog {
+    width: min(440px, calc(100vw - 32px)); padding: 0; border: 0; border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25); font-family: Inter, sans-serif;
+  }
+  .uv-dialog::backdrop { background: rgba(10, 25, 14, .5); }
+  .uv-dialog-inner { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .uv-dialog h2 { margin: 0; color: #193A22; font: 700 18px/1.3 Inter, sans-serif; }
+  .uv-dialog p { margin: 0; color: #4D584F; font: 400 13px/1.5 Inter, sans-serif; }
+  .uv-detail { background: #F8FAF8; border-radius: 8px; padding: 12px; font: 500 12px/1.6 Inter, sans-serif; color: #38423A; overflow-wrap: anywhere; }
+  .uv-demo-note { color: #8A5B06 !important; background: #FFF2D6; border-radius: 8px; padding: 10px 12px; font-size: 12px !important; }
+  .uv-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+  /* Mensaje de demostración */
+  .uv-toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+    max-width: min(520px, calc(100vw - 32px)); z-index: 1000;
+    background: #193A22; color: #fff; padding: 12px 16px; border-radius: 10px;
+    font: 500 13px/1.4 Inter, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  }
+  .uv-toast[hidden] { display: none; }
+
+  /* Tablet: los filtros pasan a 2 columnas */
+  @media (max-width: 900px) {
+    .uv-filters { grid-template-columns: 1fr 1fr; }
+    .uv-field.search { grid-column: 1 / -1; }
+  }
+
+  /* Móvil (390 px): cada fila de la tabla se convierte en una tarjeta */
+  @media (max-width: 640px) {
+    .uv-title { font-size: 20px; }
+    .uv-filters { grid-template-columns: 1fr; }
+    .uv-input { height: 44px; font-size: 14px; }
+    .uv-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .uv-table, .uv-table tbody, .uv-table tr, .uv-table td { display: block; width: 100%; box-sizing: border-box; }
+    .uv-table tr { padding: 12px 14px; border-bottom: 1px solid #EDF0ED; }
+    .uv-table tbody tr:last-child { border-bottom: 0; }
+    .uv-table td {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 6px 0; border: 0; font-size: 13px; text-align: right;
+    }
+    .uv-table td::before {
+      content: attr(data-label); flex: none; text-align: left;
+      color: #657067; font: 700 10px/1.2 Inter, sans-serif; text-transform: uppercase;
+    }
+    .uv-table td.uv-actions-cell { display: block; padding-top: 10px; }
+    .uv-table td.uv-actions-cell::before { display: none; }
+    .uv-btn { width: 100%; height: 44px; }
+    .uv-dialog-actions .uv-btn { flex: 1; width: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="app-frame">
+
+<div class="app-content">
+  <div class="uv-head">
+    <h1 class="uv-title">Usuarios del sistema</h1>
+    <p class="uv-sub">Vista administrativa de consulta de usuarios (datos ficticios).</p>
+  </div>
+
+  <div class="uv-filters" role="search">
+    <div class="uv-field search">
+      <label for="uv-search">Buscar usuario</label>
+      <input id="uv-search" class="uv-input" type="search" placeholder="Nombre o correo" autocomplete="off"/>
+    </div>
+    <div class="uv-field">
+      <label for="uv-tipo">Tipo</label>
+      <select id="uv-tipo" class="uv-input" autocomplete="off">
+        <option value="">Todos</option>
+      </select>
+    </div>
+    <div class="uv-field">
+      <label for="uv-estado">Estado</label>
+      <select id="uv-estado" class="uv-input" autocomplete="off">
+        <option value="">Todos</option>
+        <option value="activo">Activo</option>
+        <option value="inactivo">Inactivo</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="uv-bar">
+    <span id="uv-count" aria-live="polite"></span>
+    <button id="uv-clear" class="uv-clear" type="button" hidden>Limpiar filtros</button>
+  </div>
+
+  <div class="uv-card">
+    <div class="uv-scroll">
+      <table class="uv-table">
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="uv-body"></tbody>
+      </table>
+    </div>
+    <div id="uv-empty" class="uv-empty" hidden>No se encontraron usuarios con esos criterios.</div>
+  </div>
+</div>
+
+<dialog id="uv-dialog" class="uv-dialog" aria-labelledby="uv-dialog-title">
+  <div class="uv-dialog-inner">
+    <h2 id="uv-dialog-title"></h2>
+    <div id="uv-dialog-body"></div>
+    <div class="uv-dialog-actions">
+      <button id="uv-cancel" class="uv-btn" type="button">Cancelar</button>
+      <button id="uv-confirm" class="uv-btn primary" type="button">Confirmar</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="uv-toast" class="uv-toast" role="status" aria-live="polite" hidden></div>
+
+</div>
+</div>
+<script src="../layout.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* Datos de demostración (ficticios): viven solo en memoria. Al recargar la página vuelven a su estado inicial.
+     No hay llamadas al servidor ni almacenamiento del navegador: nada se envía ni se guarda. */
+  var usuarios = [
+    { id: 1, nombre: 'Laura Gómez Ruiz',       correo: 'laura.ejemplo@uceva.edu.co',       tipo: 'Egresado',       estado: 'activo' },
+    { id: 2, nombre: 'Andrés Pérez Franco',    correo: 'andres.ejemplo@uceva.edu.co',      tipo: 'Estudiante',     estado: 'activo' },
+    { id: 3, nombre: 'Camila Rojas Mejía',     correo: 'camila.ejemplo@uceva.edu.co',      tipo: 'Docente',        estado: 'activo' },
+    { id: 4, nombre: 'Julián Torres Vega',     correo: 'julian.ejemplo@uceva.edu.co',      tipo: 'Estudiante',     estado: 'inactivo' },
+    { id: 5, nombre: 'María Fernanda Ruiz',    correo: 'mariafernanda.ejemplo@uceva.edu.co', tipo: 'Administrativo', estado: 'activo' },
+    { id: 6, nombre: 'Carlos Ospina Díaz',     correo: 'carlos.ejemplo@uceva.edu.co',      tipo: 'Egresado',       estado: 'inactivo' }
+  ];
+  var INICIAL = JSON.stringify(usuarios);
+  var ESTADOS = { activo: 'Activo', inactivo: 'Inactivo' };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var body = $('uv-body'), empty = $('uv-empty'), count = $('uv-count'), clearBtn = $('uv-clear');
+  var fSearch = $('uv-search'), fTipo = $('uv-tipo'), fEstado = $('uv-estado');
+  var dialog = $('uv-dialog'), dTitle = $('uv-dialog-title'), dBody = $('uv-dialog-body');
+  var btnConfirm = $('uv-confirm'), btnCancel = $('uv-cancel'), toast = $('uv-toast');
+  var toastTimer = null, onConfirm = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function norm(s) {
+    return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+  function find(id) {
+    for (var i = 0; i < usuarios.length; i++) if (usuarios[i].id === id) return usuarios[i];
+  }
+
+  /* Opciones del filtro "Tipo" a partir de los datos */
+  (function fillTipos() {
+    var seen = {};
+    usuarios.forEach(function (u) {
+      if (!seen[u.tipo]) {
+        seen[u.tipo] = true;
+        var o = document.createElement('option');
+        o.value = u.tipo; o.textContent = u.tipo;
+        fTipo.appendChild(o);
+      }
+    });
+  })();
+
+  function matches(u) {
+    var q = norm(fSearch.value);
+    if (q && norm(u.nombre + ' ' + u.correo).indexOf(q) === -1) return false;
+    if (fTipo.value && u.tipo !== fTipo.value) return false;
+    if (fEstado.value && u.estado !== fEstado.value) return false;
+    return true;
+  }
+
+  function actionFor(u) {
+    if (u.estado === 'activo')
+      return '<button class="uv-btn" type="button" data-id="' + u.id + '">Desactivar</button>';
+    return '<button class="uv-btn primary" type="button" data-id="' + u.id + '">Activar</button>';
+  }
+
+  function render() {
+    var lista = usuarios.filter(matches);
+    body.innerHTML = lista.map(function (u) {
+      return '<tr>' +
+        '<td data-label="Nombre">' + esc(u.nombre) + '</td>' +
+        '<td data-label="Correo">' + esc(u.correo) + '</td>' +
+        '<td data-label="Tipo">' + esc(u.tipo) + '</td>' +
+        '<td data-label="Estado"><span class="uv-badge ' + u.estado + '">' + ESTADOS[u.estado] + '</span></td>' +
+        '<td class="uv-actions-cell">' + actionFor(u) + '</td>' +
+      '</tr>';
+    }).join('');
+    empty.hidden = lista.length !== 0;
+    count.textContent = lista.length + (lista.length === 1 ? ' usuario' : ' usuarios') +
+      (lista.length === usuarios.length ? '' : ' de ' + usuarios.length);
+    clearBtn.hidden = !(fSearch.value || fTipo.value || fEstado.value);
+  }
+
+  /* Mensaje de demostración */
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.hidden = true; }, 4500);
+  }
+
+  /* Diálogo de confirmación */
+  function openDialog(opts) {
+    dTitle.textContent = opts.title;
+    dBody.innerHTML = opts.html;
+    btnConfirm.textContent = opts.confirmText || 'Confirmar';
+    onConfirm = opts.onConfirm || null;
+    dialog.showModal();
+  }
+  function closeDialog() { if (dialog.open) dialog.close(); onConfirm = null; }
+
+  function detalle(u) {
+    return '<div class="uv-detail"><strong>' + esc(u.nombre) + '</strong><br>' +
+      esc(u.correo) + '<br>' + esc(u.tipo) + '<br>' +
+      'Estado actual: ' + ESTADOS[u.estado] + '</div>';
+  }
+  var NOTA = '<p class="uv-demo-note">Es una demostración: no se guardará ningún cambio real.</p>';
+
+  body.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-id]');
+    if (!btn) return;
+    var u = find(Number(btn.getAttribute('data-id')));
+    if (!u) return;
+
+    var nuevo = u.estado === 'activo' ? 'inactivo' : 'activo';
+    var verbo = nuevo === 'activo' ? 'activar' : 'desactivar';
+    openDialog({
+      title: '¿' + verbo.charAt(0).toUpperCase() + verbo.slice(1) + ' este usuario?',
+      html: detalle(u) +
+        '<p>El estado cambiará de <strong>' + ESTADOS[u.estado] + '</strong> a <strong>' + ESTADOS[nuevo] + '</strong>.</p>' + NOTA,
+      confirmText: 'Sí, ' + verbo,
+      onConfirm: function () {
+        u.estado = nuevo;
+        render();
+        showToast('Demostración: ' + u.nombre + ' ahora figura como ' + ESTADOS[nuevo] + '. No se modificaron datos reales.');
+      }
+    });
+  });
+
+  btnConfirm.addEventListener('click', function () {
+    var fn = onConfirm;
+    closeDialog();
+    if (fn) fn();
+  });
+  btnCancel.addEventListener('click', closeDialog);
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) closeDialog(); }); // clic en el fondo
+  dialog.addEventListener('close', function () { onConfirm = null; });
+
+  /* Búsqueda y filtros */
+  [fSearch, fTipo, fEstado].forEach(function (el) {
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  });
+  clearBtn.addEventListener('click', function () {
+    fSearch.value = ''; fTipo.value = ''; fEstado.value = '';
+    render();
+    fSearch.focus();
+  });
+
+  /* Estado inicial: campos vacíos y datos originales, aunque el navegador intente restaurar los campos */
+  function resetAll(e) {
+    if (e && e.persisted) usuarios = JSON.parse(INICIAL);
+    fSearch.value = ''; fTipo.value = ''; fEstado.value = '';
+    render();
+  }
+  resetAll();
+  window.addEventListener('pageshow', resetAll);
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Mis reservas · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<link href="reservas.css" rel="stylesheet"/>
+</head>
+<body class="rv" data-page="reservas">
+<div class="wrap">
+<div class="app-frame">
+
+<div class="app-content">
+<main class="rv-page">
+
+  <div class="rv-head">
+    <div>
+      <h1 class="rv-title">Mis reservas</h1>
+      <p class="rv-sub">Consulta, edita o cancela las reservas próximas asociadas a tu cuenta.</p>
+    </div>
+    <a class="rv-btn rv-btn--primary" href="02-explorar-espacios.html">Buscar espacio</a>
+  </div>
+
+  <form class="rv-filters" id="form-filtros" role="search" aria-label="Filtrar mis reservas">
+    <div class="rv-field rv-field--wide">
+      <label for="f-texto">Buscar espacio</label>
+      <input class="rv-input" id="f-texto" type="search" placeholder="Ej.: Laboratorio de Redes" autocomplete="off"/>
+    </div>
+    <div class="rv-field">
+      <label for="f-estado">Estado</label>
+      <select class="rv-select" id="f-estado"></select>
+    </div>
+    <div class="rv-field">
+      <label for="f-tipo">Tipo de espacio</label>
+      <select class="rv-select" id="f-tipo"></select>
+    </div>
+    <div class="rv-filters__actions">
+      <button class="rv-btn rv-btn--ghost" type="button" id="btn-limpiar">Limpiar filtros</button>
+    </div>
+  </form>
+
+  <p class="rv-count" id="rv-count" tabindex="-1" aria-live="polite"></p>
+  <div class="rv-list" id="rv-list" role="table" aria-label="Mis reservas"></div>
+
+  <p class="rv-note">Los registros y acciones de esta pantalla son datos de demostración: editar o cancelar no guarda cambios reales.</p>
+</main>
+</div>
+
+</div>
+</div>
+
+<!-- Aviso de demostración -->
+<div class="rv-toast-zone" id="rv-toast-zone" role="status" aria-live="polite"></div>
+
+<!-- Ver reserva -->
+<dialog class="rv-dialog" id="dlg-ver" aria-labelledby="ver-titulo">
+  <div class="rv-dialog__form">
+    <div class="rv-dialog__head"><h2 class="rv-dialog__title" id="ver-titulo">Detalle de la reserva</h2></div>
+    <div class="rv-dialog__body"><dl class="rv-dl" id="ver-datos"></dl></div>
+    <div class="rv-dialog__foot"><button class="rv-btn rv-btn--primary" type="button" data-close>Cerrar</button></div>
+  </div>
+</dialog>
+
+<!-- Editar reserva (demostración) -->
+<dialog class="rv-dialog" id="dlg-editar" aria-labelledby="edit-titulo" aria-describedby="edit-desc">
+  <form class="rv-dialog__form" id="form-editar" novalidate>
+    <div class="rv-dialog__head">
+      <h2 class="rv-dialog__title" id="edit-titulo">Editar reserva</h2>
+      <p class="rv-dialog__desc" id="edit-desc">Modifica los datos como demostración. Los cambios no se guardan permanentemente.</p>
+    </div>
+    <div class="rv-dialog__body">
+      <div class="rv-field">
+        <label for="e-espacio">Espacio</label>
+        <select class="rv-select" id="e-espacio"></select>
+      </div>
+      <div class="rv-field">
+        <label for="e-fecha">Fecha</label>
+        <input class="rv-input" id="e-fecha" type="date" aria-describedby="e-fecha-err"/>
+        <p class="rv-error" id="e-fecha-err"></p>
+      </div>
+      <div class="rv-two">
+        <div class="rv-field">
+          <label for="e-inicio">Hora de inicio</label>
+          <input class="rv-input" id="e-inicio" type="time" aria-describedby="e-inicio-err"/>
+          <p class="rv-error" id="e-inicio-err"></p>
+        </div>
+        <div class="rv-field">
+          <label for="e-fin">Hora de finalización</label>
+          <input class="rv-input" id="e-fin" type="time" aria-describedby="e-fin-err"/>
+          <p class="rv-error" id="e-fin-err"></p>
+        </div>
+      </div>
+      <div class="rv-field">
+        <label for="e-motivo">Motivo de uso</label>
+        <select class="rv-select" id="e-motivo"></select>
+      </div>
+    </div>
+    <div class="rv-dialog__foot">
+      <button class="rv-btn rv-btn--ghost" type="button" data-close>Descartar cambios</button>
+      <button class="rv-btn rv-btn--primary" type="submit">Guardar (demostración)</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- Confirmar cancelación -->
+<dialog class="rv-dialog" id="dlg-cancelar" aria-labelledby="cancel-titulo" aria-describedby="cancel-desc">
+  <div class="rv-dialog__form">
+    <div class="rv-dialog__head">
+      <h2 class="rv-dialog__title" id="cancel-titulo">¿Cancelar esta reserva?</h2>
+      <p class="rv-dialog__desc" id="cancel-desc">Vas a cancelar la reserva de demostración:</p>
+    </div>
+    <div class="rv-dialog__body"><strong id="cancel-resumen"></strong></div>
+    <div class="rv-dialog__foot">
+      <button class="rv-btn rv-btn--ghost" type="button" data-close>No, mantener reserva</button>
+      <button class="rv-btn rv-btn--danger-solid" type="button" id="btn-confirmar-cancelar">Sí, cancelar reserva</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="../layout.js"></script>
+<script src="reservas-demo.js"></script>
+</body>
+</html>

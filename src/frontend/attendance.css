@@ -1,0 +1,100 @@
+.app-frame.attendance-shell,
+.app-frame.attendance-shell * {
+  box-sizing: border-box;
+}
+
+.attendance-wrap {
+  width: 100%;
+  min-width: 0;
+  max-width: 1180px;
+}
+
+.app-frame.attendance-shell {
+  width: 100%;
+  min-width: 0;
+  max-width: 1180px;
+  height: auto;
+  min-height: min(860px, calc(100vh - 48px));
+  overflow: visible;
+}
+
+.attendance-shell .app-sidebar {
+  box-sizing: border-box;
+}
+@media (min-width: 901px) {
+  .attendance-shell .app-sidebar { flex: 0 0 230px; }
+}
+
+.attendance-shell .app-main,
+.attendance-shell .app-content {
+  min-width: 0;
+  overflow: visible;
+}
+
+.attendance-shell .attendance-content {
+  width: 100%;
+}
+
+.attendance-shell .attendance-page {
+  box-sizing: border-box;
+  min-width: 0;
+}
+
+@media (max-width: 850px) {
+  .app-frame.attendance-shell {
+    min-height: calc(100vh - 16px);
+    min-height: calc(100dvh - max(16px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .attendance-shell .app-main {
+    width: 100%;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .attendance-shell .app-topbar {
+    box-sizing: border-box;
+    width: 100%;
+    height: auto;
+    min-height: 64px;
+    gap: 10px;
+    padding: 12px 16px;
+    flex-wrap: wrap;
+  }
+
+  .attendance-shell .app-topbar__titles {
+    min-width: 0;
+    flex: 1 1 180px;
+  }
+
+  .attendance-shell .app-badge {
+    max-width: 100%;
+  }
+
+  .attendance-shell .app-badge__text {
+    overflow-wrap: anywhere;
+  }
+
+  .attendance-shell .app-content {
+    box-sizing: border-box;
+    width: 100%;
+    padding: clamp(16px, 4vw, 24px);
+    overflow: visible;
+  }
+}
+
+@media (max-width: 480px) {
+  .attendance-shell .app-nav__link {
+    font-size: 11px;
+  }
+
+  .attendance-shell .app-topbar {
+    padding: 12px;
+  }
+
+  .attendance-shell .app-badge {
+    padding: 6px 8px;
+  }
+}

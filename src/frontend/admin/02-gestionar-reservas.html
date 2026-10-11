@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Gestión de reservas · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<style>
+  /* Estilos propios de esta pantalla (prefijo rv-) para no afectar a las demás */
+
+  /* Cada bloque ocupa todo el ancho de .app-content */
+  .rv-head, .rv-filters, .rv-bar, .rv-card {
+    align-self: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    min-width: 0;
+  }
+
+  .rv-head { padding-bottom: 22px; }
+  .rv-title { margin: 0 0 6px; color: #193A22; font: 700 23px/1.2 Inter, sans-serif; }
+  .rv-sub { margin: 0; color: #6B756D; font: 400 13px/1.5 Inter, sans-serif; }
+
+  .rv-filters {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 12px;
+    align-items: end;
+    padding-bottom: 14px;
+  }
+  .rv-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+  .rv-field label { color: #4D584F; font: 600 11px/1.2 Inter, sans-serif; }
+  .rv-input {
+    height: 40px; width: 100%; box-sizing: border-box;
+    padding: 0 11px; background: #fff; color: #343B35;
+    border: 1px solid #D7DFD7; border-radius: 7px;
+    font: 400 12px Inter, sans-serif;
+  }
+  .rv-input:focus-visible, .rv-btn:focus-visible, .rv-clear:focus-visible, .rv-dialog button:focus-visible {
+    outline: 2px solid #27823D; outline-offset: 2px;
+  }
+
+  .rv-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 12px; padding-bottom: 12px; min-height: 28px;
+    color: #6B756D; font: 500 12px Inter, sans-serif;
+  }
+  .rv-clear {
+    background: none; border: 0; padding: 6px 4px; cursor: pointer;
+    color: #247238; font: 700 12px Inter, sans-serif; text-decoration: underline;
+  }
+  .rv-clear[hidden] { display: none; }
+
+  .rv-card {
+    background: #fff; border: 1px solid #E4EAE4; border-radius: 10px; overflow: hidden;
+  }
+  .rv-scroll { overflow-x: auto; }
+  .rv-table { width: 100%; border-collapse: collapse; }
+  .rv-table th {
+    background: #F8FAF8; color: #657067; text-align: left;
+    padding: 13px 14px; border-bottom: 1px solid #EDF0ED;
+    font: 700 10px/1.2 Inter, sans-serif;
+  }
+  .rv-table td {
+    padding: 13px 14px; border-bottom: 1px solid #EDF0ED;
+    color: #38423A; font: 400 11px/1.3 Inter, sans-serif; vertical-align: middle;
+  }
+  .rv-table tbody tr:last-child td { border-bottom: 0; }
+
+  .rv-badge {
+    display: inline-block; padding: 5px 8px; border-radius: 20px;
+    font: 700 10px/1.2 Inter, sans-serif;
+  }
+  .rv-badge.pendiente  { background: #FFF2D6; color: #8A5B06; }
+  .rv-badge.confirmada { background: #E8F5E9; color: #246D38; }
+  .rv-badge.cancelada  { background: #FDECEC; color: #9B2C2C; }
+
+  .rv-actions { display: flex; gap: 4px; flex-wrap: wrap; }
+  .rv-btn {
+    height: 38px; padding: 0 14px; border-radius: 7px; cursor: pointer;
+    border: 1px solid #27823D; background: #fff; color: #247238;
+    font: 700 12px Inter, sans-serif;
+  }
+  .rv-btn.primary { background: #27823D; color: #fff; }
+  .rv-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+  .rv-empty { padding: 36px 16px; text-align: center; color: #6B756D; font: 500 13px Inter, sans-serif; }
+  .rv-empty[hidden] { display: none; }
+
+  /* Diálogo de confirmación */
+  .rv-dialog {
+    width: min(440px, calc(100vw - 32px)); padding: 0; border: 0; border-radius: 12px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.25); font-family: Inter, sans-serif;
+  }
+  .rv-dialog::backdrop { background: rgba(10, 25, 14, .5); }
+  .rv-dialog-inner { padding: 22px; display: flex; flex-direction: column; gap: 14px; }
+  .rv-dialog h2 { margin: 0; color: #193A22; font: 700 18px/1.3 Inter, sans-serif; }
+  .rv-dialog p { margin: 0; color: #4D584F; font: 400 13px/1.5 Inter, sans-serif; }
+  .rv-detail { background: #F8FAF8; border-radius: 8px; padding: 12px; font: 500 12px/1.6 Inter, sans-serif; color: #38423A; }
+  .rv-demo-note { color: #8A5B06 !important; background: #FFF2D6; border-radius: 8px; padding: 10px 12px; font-size: 12px !important; }
+  .rv-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+  /* Mensaje de demostración */
+  .rv-toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%);
+    max-width: min(520px, calc(100vw - 32px)); z-index: 1000;
+    background: #193A22; color: #fff; padding: 12px 16px; border-radius: 10px;
+    font: 500 13px/1.4 Inter, sans-serif; box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  }
+  .rv-toast[hidden] { display: none; }
+
+  /* Tablet: los filtros pasan a 2 columnas */
+  @media (max-width: 900px) {
+    .rv-filters { grid-template-columns: 1fr 1fr; }
+    .rv-field.search { grid-column: 1 / -1; }
+  }
+
+  /* Móvil (390 px): cada fila de la tabla se convierte en una tarjeta */
+  @media (max-width: 640px) {
+    .rv-title { font-size: 20px; }
+    .rv-filters { grid-template-columns: 1fr; }
+    .rv-input { height: 44px; font-size: 14px; }
+    .rv-table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    .rv-table, .rv-table tbody, .rv-table tr, .rv-table td { display: block; width: 100%; box-sizing: border-box; }
+    .rv-table tr { padding: 12px 14px; border-bottom: 1px solid #EDF0ED; }
+    .rv-table tbody tr:last-child { border-bottom: 0; }
+    .rv-table td {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px;
+      padding: 6px 0; border: 0; font-size: 13px; text-align: right;
+    }
+    .rv-table td::before {
+      content: attr(data-label); flex: none; text-align: left;
+      color: #657067; font: 700 10px/1.2 Inter, sans-serif; text-transform: uppercase;
+    }
+    .rv-table td.rv-actions-cell { display: block; padding-top: 10px; }
+    .rv-table td.rv-actions-cell::before { display: none; }
+    .rv-actions { flex-wrap: nowrap; }
+    .rv-btn { flex: 1; height: 44px; }
+    .rv-dialog-actions .rv-btn { flex: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="app-frame">
+
+<div class="app-content">
+  <div class="rv-head">
+    <h1 class="rv-title">Gestión de reservas</h1>
+    <p class="rv-sub">Revisión administrativa de solicitudes (datos de muestra).</p>
+  </div>
+
+  <div class="rv-filters" role="search">
+    <div class="rv-field search">
+      <label for="rv-search">Buscar</label>
+      <input id="rv-search" class="rv-input" type="search" placeholder="Usuario, espacio, estado o fecha" autocomplete="off"/>
+    </div>
+    <div class="rv-field">
+      <label for="rv-estado">Estado</label>
+      <select id="rv-estado" class="rv-input" autocomplete="off">
+        <option value="">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="confirmada">Confirmada</option>
+        <option value="cancelada">Cancelada</option>
+      </select>
+    </div>
+    <div class="rv-field">
+      <label for="rv-fecha">Fecha</label>
+      <input id="rv-fecha" class="rv-input" type="date" autocomplete="off"/>
+    </div>
+    <div class="rv-field">
+      <label for="rv-espacio">Espacio</label>
+      <select id="rv-espacio" class="rv-input" autocomplete="off">
+        <option value="">Todos</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="rv-bar">
+    <span id="rv-count" aria-live="polite"></span>
+    <button id="rv-clear" class="rv-clear" type="button" hidden>Limpiar filtros</button>
+  </div>
+
+  <div class="rv-card">
+    <div class="rv-scroll">
+      <table class="rv-table">
+        <thead>
+          <tr>
+            <th scope="col">Usuario</th>
+            <th scope="col">Espacio</th>
+            <th scope="col">Fecha / hora</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="rv-body"></tbody>
+      </table>
+    </div>
+    <div id="rv-empty" class="rv-empty" hidden>No se encontraron reservas con esos criterios.</div>
+  </div>
+</div>
+
+<dialog id="rv-dialog" class="rv-dialog" aria-labelledby="rv-dialog-title">
+  <div class="rv-dialog-inner">
+    <h2 id="rv-dialog-title"></h2>
+    <div id="rv-dialog-body"></div>
+    <div class="rv-dialog-actions">
+      <button id="rv-cancel" class="rv-btn" type="button">Cancelar</button>
+      <button id="rv-confirm" class="rv-btn primary" type="button">Confirmar</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="rv-toast" class="rv-toast" role="status" aria-live="polite" hidden></div>
+
+</div>
+</div>
+<script src="../layout.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  /* Datos de demostración: viven solo en memoria. Al recargar la página vuelven a su estado inicial.
+     No hay llamadas al servidor ni almacenamiento del navegador: nada se envía ni se guarda. */
+  var reservas = [
+    { id: 1, usuario: 'Laura Gómez',         espacio: 'Laboratorio de Sistemas 1',  fecha: '2026-10-20', fechaTxt: '20 oct', hora: '10:00–12:00', estado: 'pendiente' },
+    { id: 2, usuario: 'Andrés Pérez',        espacio: 'Sala de estudio biblioteca', fecha: '2026-10-21', fechaTxt: '21 oct', hora: '14:00–16:00', estado: 'confirmada' },
+    { id: 3, usuario: 'Camila Rojas',        espacio: 'Auditorio principal',        fecha: '2026-10-22', fechaTxt: '22 oct', hora: '08:00–10:00', estado: 'pendiente' },
+    { id: 4, usuario: 'Julián Torres',       espacio: 'Laboratorio de Sistemas 1',  fecha: '2026-10-22', fechaTxt: '22 oct', hora: '15:00–17:00', estado: 'cancelada' },
+    { id: 5, usuario: 'María Fernanda Ruiz', espacio: 'Sala de estudio biblioteca', fecha: '2026-10-23', fechaTxt: '23 oct', hora: '09:00–11:00', estado: 'confirmada' },
+    { id: 6, usuario: 'Sofía Herrera',       espacio: 'Auditorio principal',        fecha: '2026-10-24', fechaTxt: '24 oct', hora: '13:00–15:00', estado: 'pendiente' }
+  ];
+  var INICIAL = JSON.stringify(reservas);
+  var ESTADOS = { pendiente: 'Pendiente', confirmada: 'Confirmada', cancelada: 'Cancelada' };
+
+  var $ = function (id) { return document.getElementById(id); };
+  var body = $('rv-body'), empty = $('rv-empty'), count = $('rv-count'), clearBtn = $('rv-clear');
+  var fSearch = $('rv-search'), fEstado = $('rv-estado'), fFecha = $('rv-fecha'), fEspacio = $('rv-espacio');
+  var dialog = $('rv-dialog'), dTitle = $('rv-dialog-title'), dBody = $('rv-dialog-body');
+  var btnConfirm = $('rv-confirm'), btnCancel = $('rv-cancel'), toast = $('rv-toast');
+  var toastTimer = null, onConfirm = null;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function norm(s) {
+    return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  }
+  function find(id) {
+    for (var i = 0; i < reservas.length; i++) if (reservas[i].id === id) return reservas[i];
+  }
+
+  /* Opciones del filtro "Espacio" a partir de los datos */
+  (function fillEspacios() {
+    var seen = {};
+    reservas.forEach(function (r) {
+      if (!seen[r.espacio]) {
+        seen[r.espacio] = true;
+        var o = document.createElement('option');
+        o.value = r.espacio; o.textContent = r.espacio;
+        fEspacio.appendChild(o);
+      }
+    });
+  })();
+
+  function matches(r) {
+    var q = norm(fSearch.value);
+    if (q) {
+      var texto = norm([r.usuario, r.espacio, ESTADOS[r.estado], r.fechaTxt, r.hora].join(' '));
+      if (texto.indexOf(q) === -1) return false;
+    }
+    if (fEstado.value && r.estado !== fEstado.value) return false;
+    if (fFecha.value && r.fecha !== fFecha.value) return false;
+    if (fEspacio.value && r.espacio !== fEspacio.value) return false;
+    return true;
+  }
+
+  function actionsFor(r) {
+    var ver = '<button class="rv-btn" type="button" data-action="ver" data-id="' + r.id + '">Ver</button>';
+    if (r.estado === 'pendiente')
+      return '<button class="rv-btn primary" type="button" data-action="aprobar" data-id="' + r.id + '">Aprobar</button>' + ver;
+    if (r.estado === 'confirmada')
+      return '<button class="rv-btn" type="button" data-action="gestionar" data-id="' + r.id + '">Gestionar</button>';
+    return ver;
+  }
+
+  function render() {
+    var lista = reservas.filter(matches);
+    body.innerHTML = lista.map(function (r) {
+      return '<tr>' +
+        '<td data-label="Usuario">' + esc(r.usuario) + '</td>' +
+        '<td data-label="Espacio">' + esc(r.espacio) + '</td>' +
+        '<td data-label="Fecha / hora">' + esc(r.fechaTxt) + ' · ' + esc(r.hora) + '</td>' +
+        '<td data-label="Estado"><span class="rv-badge ' + r.estado + '">' + ESTADOS[r.estado] + '</span></td>' +
+        '<td class="rv-actions-cell"><div class="rv-actions">' + actionsFor(r) + '</div></td>' +
+      '</tr>';
+    }).join('');
+    empty.hidden = lista.length !== 0;
+    count.textContent = lista.length + (lista.length === 1 ? ' reserva' : ' reservas') +
+      (lista.length === reservas.length ? '' : ' de ' + reservas.length);
+    clearBtn.hidden = !(fSearch.value || fEstado.value || fFecha.value || fEspacio.value);
+  }
+
+  /* Mensaje de demostración */
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.hidden = false;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.hidden = true; }, 4500);
+  }
+
+  /* Diálogo reutilizable */
+  function openDialog(opts) {
+    dTitle.textContent = opts.title;
+    dBody.innerHTML = opts.html;
+    btnConfirm.textContent = opts.confirmText || 'Confirmar';
+    btnConfirm.style.display = opts.info ? 'none' : '';
+    btnCancel.textContent = opts.info ? 'Cerrar' : 'Cancelar';
+    btnConfirm.disabled = false;
+    onConfirm = opts.onConfirm || null;
+    dialog.showModal();
+    if (opts.onOpen) opts.onOpen();
+  }
+  function closeDialog() { if (dialog.open) dialog.close(); onConfirm = null; }
+
+  function detalle(r) {
+    return '<div class="rv-detail"><strong>' + esc(r.usuario) + '</strong><br>' +
+      esc(r.espacio) + '<br>' + esc(r.fechaTxt) + ' · ' + esc(r.hora) + '<br>' +
+      'Estado actual: ' + ESTADOS[r.estado] + '</div>';
+  }
+  var NOTA = '<p class="rv-demo-note">Es una demostración: no se guardará ningún cambio real.</p>';
+
+  body.addEventListener('click', function (e) {
+    var btn = e.target.closest('button[data-action]');
+    if (!btn) return;
+    var r = find(Number(btn.getAttribute('data-id')));
+    if (!r) return;
+    var action = btn.getAttribute('data-action');
+
+    if (action === 'aprobar') {
+      openDialog({
+        title: '¿Aprobar esta reserva?',
+        html: detalle(r) + NOTA,
+        confirmText: 'Sí, aprobar',
+        onConfirm: function () {
+          r.estado = 'confirmada';
+          render();
+          showToast('Demostración: la reserva de ' + r.usuario + ' se marcó como Confirmada. No se modificaron datos reales.');
+        }
+      });
+    } else if (action === 'gestionar') {
+      openDialog({
+        title: 'Cambiar estado de la reserva',
+        html: detalle(r) +
+          '<div class="rv-field"><label for="rv-nuevo">Nuevo estado</label>' +
+          '<select id="rv-nuevo" class="rv-input">' +
+          Object.keys(ESTADOS).map(function (k) {
+            return '<option value="' + k + '"' + (k === r.estado ? ' selected' : '') + '>' + ESTADOS[k] + '</option>';
+          }).join('') + '</select></div>' + NOTA,
+        confirmText: 'Confirmar cambio',
+        onOpen: function () {
+          var sel = $('rv-nuevo');
+          btnConfirm.disabled = true; // hasta que elija un estado distinto
+          sel.addEventListener('change', function () { btnConfirm.disabled = sel.value === r.estado; });
+        },
+        onConfirm: function () {
+          var nuevo = $('rv-nuevo').value;
+          r.estado = nuevo;
+          render();
+          showToast('Demostración: la reserva de ' + r.usuario + ' cambió a ' + ESTADOS[nuevo] + '. No se modificaron datos reales.');
+        }
+      });
+    } else if (action === 'ver') {
+      openDialog({ title: 'Detalle de la reserva', html: detalle(r), info: true });
+    }
+  });
+
+  btnConfirm.addEventListener('click', function () {
+    var fn = onConfirm;
+    closeDialog();
+    if (fn) fn();
+  });
+  btnCancel.addEventListener('click', closeDialog);
+  dialog.addEventListener('click', function (e) { if (e.target === dialog) closeDialog(); }); // clic en el fondo
+  dialog.addEventListener('close', function () { onConfirm = null; });
+
+  /* Búsqueda y filtros */
+  [fSearch, fEstado, fFecha, fEspacio].forEach(function (el) {
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  });
+  clearBtn.addEventListener('click', function () {
+    fSearch.value = ''; fEstado.value = ''; fFecha.value = ''; fEspacio.value = '';
+    render();
+    fSearch.focus();
+  });
+
+  /* Estado inicial: campos vacíos y datos originales, aunque el navegador intente restaurar los campos */
+  function resetAll(e) {
+    if (e && e.persisted) reservas = JSON.parse(INICIAL);
+    fSearch.value = ''; fEstado.value = ''; fFecha.value = ''; fEspacio.value = '';
+    render();
+  }
+  resetAll();
+  window.addEventListener('pageshow', resetAll);
+})();
+</script>
+</body>
+</html>

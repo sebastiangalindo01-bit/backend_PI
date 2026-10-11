@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Elegir espacio · Asistente de reservas · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <div class="screen-heading">
+      <h1>Elige tu espacio</h1>
+      <p>Selecciona el lugar donde realizarás tu actividad. Los datos son de demostración.</p>
+    </div>
+    <ol class="demo-progress" aria-label="Pasos para solicitar una reserva">
+      <li class="is-current">1. Espacio</li><li>2. Fecha</li><li>3. Horario</li><li>4. Revisión</li>
+    </ol>
+    <div class="prototype-notice">La selección es visual y no consulta disponibilidad real ni crea una reserva.</div>
+    <div class="flow-layout">
+    <div class="flow-main">
+    <div class="demo-grid is-three">
+      <article class="demo-card">
+        <div class="choice-art" aria-hidden="true">⌘</div><h2>Laboratorio de Sistemas 1</h2>
+        <p class="screen-muted">Edificio de Sistemas · Capacidad para 24 personas</p>
+        <span class="app-badge"><span class="app-badge__text">Disponible · ejemplo</span></span>
+        <button class="demo-link demo-choice" type="button" data-select-space="sistemas" aria-pressed="false">Seleccionar espacio</button>
+      </article>
+      <article class="demo-card">
+        <div class="choice-art" aria-hidden="true">⌘</div><h2>Laboratorio de Redes</h2>
+        <p class="screen-muted">Bloque académico · Capacidad para 20 personas</p>
+        <span class="app-badge"><span class="app-badge__text">Disponibilidad ilustrativa</span></span>
+        <button class="demo-link demo-choice" type="button" data-select-space="redes" aria-pressed="false">Seleccionar espacio</button>
+      </article>
+      <article class="demo-card">
+        <div class="choice-art" aria-hidden="true">▤</div><h2>Sala de estudio biblioteca</h2>
+        <p class="screen-muted">Biblioteca central · Capacidad para 8 personas</p>
+        <span class="app-badge"><span class="app-badge__text">Disponible · ejemplo</span></span>
+        <button class="demo-link demo-choice" type="button" data-select-space="biblioteca" aria-pressed="false">Seleccionar espacio</button>
+      </article>
+    </div>
+    <p class="demo-error" data-error="space" role="alert" tabindex="-1" hidden></p>
+    <div class="demo-actions">
+      <button class="demo-link" type="button" data-next="12-seleccionar-fecha.html">Continuar a fecha</button>
+      <a class="demo-link is-secondary" href="04-asistente-reserva.html">Volver al asistente</a>
+    </div>
+    </div>
+    <aside class="flow-aside demo-card" aria-label="Resumen de tu solicitud">
+      <img class="flow-aside__art" src="../assets/ilustraciones/laboratorio.svg" alt="" width="240" height="180">
+      <h2>Tu solicitud</h2>
+    <dl>
+      <div><dt>Espacio</dt><dd data-value="space">Pendiente de selección</dd></div>
+      <div><dt>Fecha</dt><dd data-value="date">Pendiente de selección</dd></div>
+      <div><dt>Horario</dt><dd data-value="slot">Pendiente de selección</dd></div>
+    </dl>
+      <p class="screen-muted">Elige el lugar donde harás tu actividad. Después podrás escoger fecha y horario.</p>
+    </aside>
+    </div>
+  </main>
+</div></div>
+<script src="../layout.js"></script><script src="asistente-reserva.js"></script>
+</body>
+</html>

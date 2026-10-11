@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Inicio · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <section class="page-hero">
+      <div>
+        <h1>Encuentra tu próximo espacio</h1>
+        <p>Consulta laboratorios y espacios disponibles para tus actividades.</p>
+        <a class="page-hero__cta" href="02-explorar-espacios.html">Explorar espacios</a>
+      </div>
+      <img class="page-hero__art" src="../assets/ilustraciones/laboratorio.svg" alt="" width="240" height="180">
+    </section>
+
+    <section class="stat-grid" aria-label="Resumen">
+      <div class="stat-card"><span class="stat-card__label">Espacios disponibles</span><span class="stat-card__value">8</span></div>
+      <div class="stat-card"><span class="stat-card__label">Mis próximas reservas</span><span class="stat-card__value">2</span></div>
+      <div class="stat-card"><span class="stat-card__label">Horas de asistencia</span><span class="stat-card__value">12 h</span></div>
+    </section>
+
+    <h2 class="section-title">Espacios destacados</h2>
+    <div class="spaces-grid">
+      <article class="space-card">
+        <div class="space-card__header"><div class="space-card__icon">⌘</div></div>
+        <div class="space-card__body">
+          <div class="space-card__type">Laboratorio</div>
+          <h3 class="space-card__title">Laboratorio de Sistemas 1</h3>
+          <p class="space-card__location">Edificio de Sistemas · Capacidad: 24 personas</p>
+          <div class="space-card__footer">
+            <div class="space-card__status space-card__status--available">Disponible</div>
+            <a class="space-card__button" href="03-detalle-espacio.html?id=sistemas-1">Ver espacio</a>
+          </div>
+        </div>
+      </article>
+      <article class="space-card">
+        <div class="space-card__header"><div class="space-card__icon">▤</div></div>
+        <div class="space-card__body">
+          <div class="space-card__type">Sala de estudio</div>
+          <h3 class="space-card__title">Sala de estudio biblioteca</h3>
+          <p class="space-card__location">Biblioteca central · Capacidad: 8 personas</p>
+          <div class="space-card__footer">
+            <div class="space-card__status space-card__status--available">Disponible</div>
+            <a class="space-card__button" href="03-detalle-espacio.html?id=biblioteca-estudio">Ver espacio</a>
+          </div>
+        </div>
+      </article>
+      <article class="space-card">
+        <div class="space-card__header"><div class="space-card__icon">⌘</div></div>
+        <div class="space-card__body">
+          <div class="space-card__type">Laboratorio</div>
+          <h3 class="space-card__title">Laboratorio de Redes</h3>
+          <p class="space-card__location">Bloque académico · Capacidad: 20 personas</p>
+          <div class="space-card__footer">
+            <div class="space-card__status space-card__status--busy">Ocupado ahora</div>
+            <a class="space-card__button" href="03-detalle-espacio.html?id=redes">Ver espacio</a>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <h2 class="section-title">Accesos rápidos</h2>
+    <div class="quick-access-grid">
+      <a href="06-mis-reservas.html" class="quick-access-card"><div class="quick-access-card__title">Mis reservas</div><div class="quick-access-card__description">Revisa tus próximas visitas</div></a>
+      <a href="07-historial-reservas.html" class="quick-access-card"><div class="quick-access-card__title">Historial</div><div class="quick-access-card__description">Consulta reservas anteriores</div></a>
+      <a href="08-perfil.html" class="quick-access-card"><div class="quick-access-card__title">Mi perfil</div><div class="quick-access-card__description">Ver información de la cuenta</div></a>
+    </div>
+
+    <div class="demo-actions" aria-label="Estados de demostración del inicio">
+      <a class="demo-link is-secondary" href="16-inicio-cargando.html">Ver estado de carga</a>
+      <a class="demo-link is-secondary" href="17-error-inicio.html">Ver estado de error</a>
+    </div>
+  </main>
+</div></div>
+<script src="../layout.js"></script>
+</body>
+</html>

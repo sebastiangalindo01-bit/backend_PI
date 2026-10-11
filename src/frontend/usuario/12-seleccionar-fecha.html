@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Elegir fecha · Asistente de reservas · SAICI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <div class="screen-heading">
+      <h1>Elige la fecha</h1>
+      <p><span data-value="space">Pendiente de selección</span> · Fechas y disponibilidad ilustrativas.</p>
+    </div>
+    <ol class="demo-progress" aria-label="Pasos para solicitar una reserva">
+      <li>1. Espacio</li><li class="is-current">2. Fecha</li><li>3. Horario</li><li>4. Revisión</li>
+    </ol>
+    <div class="prototype-notice">La disponibilidad del calendario es de ejemplo; no representa horarios confirmados.</div>
+    <div class="flow-layout">
+    <div class="flow-main">
+    <section class="demo-card" aria-labelledby="calendar-title">
+      <div class="row between"><h2 id="calendar-title">Octubre de 2026</h2><span class="screen-muted">Formato de fecha: día/mes/año</span></div>
+      <div class="demo-calendar" role="group" aria-label="Fechas disponibles de octubre de 2026">
+        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+        <span></span><span></span><span></span><span aria-label="1 de octubre, fecha pasada">1</span><span aria-label="2 de octubre, fecha pasada">2</span><span aria-label="3 de octubre, fecha pasada">3</span><span aria-label="4 de octubre, fecha pasada">4</span>
+        <span aria-label="5 de octubre, fecha pasada">5</span><span aria-label="6 de octubre, fecha pasada">6</span><span aria-label="7 de octubre, fecha pasada">7</span><span aria-label="8 de octubre, fecha pasada">8</span>
+        <button type="button" data-select-date="2026-10-09" aria-label="Elegir 9 de octubre" aria-pressed="false">9</button><button type="button" data-select-date="2026-10-10" aria-label="Elegir 10 de octubre" aria-pressed="false">10</button><button type="button" data-select-date="2026-10-11" aria-label="Elegir 11 de octubre" aria-pressed="false">11</button>
+        <button type="button" data-select-date="2026-10-12" aria-label="Elegir 12 de octubre" aria-pressed="false">12</button><button type="button" data-select-date="2026-10-13" aria-label="Elegir 13 de octubre" aria-pressed="false">13</button><button type="button" data-select-date="2026-10-14" aria-label="Elegir 14 de octubre" aria-pressed="false">14</button><button type="button" data-select-date="2026-10-15" aria-label="Elegir 15 de octubre" aria-pressed="false">15</button><button type="button" data-select-date="2026-10-16" aria-label="Elegir 16 de octubre" aria-pressed="false">16</button><button type="button" data-select-date="2026-10-17" aria-label="Elegir 17 de octubre" aria-pressed="false">17</button><button type="button" data-select-date="2026-10-18" aria-label="Elegir 18 de octubre" aria-pressed="false">18</button>
+        <button type="button" data-select-date="2026-10-19" aria-label="Elegir 19 de octubre" aria-pressed="false">19</button><button type="button" data-select-date="2026-10-20" aria-label="Elegir 20 de octubre" aria-pressed="false">20</button><button type="button" data-select-date="2026-10-21" aria-label="Elegir 21 de octubre" aria-pressed="false">21</button><button type="button" data-select-date="2026-10-22" aria-label="Elegir 22 de octubre" aria-pressed="false">22</button><button type="button" data-select-date="2026-10-23" aria-label="Elegir 23 de octubre" aria-pressed="false">23</button><button type="button" data-select-date="2026-10-24" aria-label="Elegir 24 de octubre" aria-pressed="false">24</button><button type="button" data-select-date="2026-10-25" aria-label="Elegir 25 de octubre" aria-pressed="false">25</button>
+        <button type="button" data-select-date="2026-10-26" aria-label="Elegir 26 de octubre" aria-pressed="false">26</button><button type="button" data-select-date="2026-10-27" aria-label="Elegir 27 de octubre" aria-pressed="false">27</button><button type="button" data-select-date="2026-10-28" aria-label="Elegir 28 de octubre" aria-pressed="false">28</button><button type="button" data-select-date="2026-10-29" aria-label="Elegir 29 de octubre" aria-pressed="false">29</button><button type="button" data-select-date="2026-10-30" aria-label="Elegir 30 de octubre" aria-pressed="false">30</button><button type="button" data-select-date="2026-10-31" aria-label="Elegir 31 de octubre" aria-pressed="false">31</button><span></span>
+      </div>
+      <p class="screen-muted">Las fechas se ofrecen solo para probar el flujo; no representan disponibilidad real.</p>
+    </section>
+    <p class="demo-error" data-error="date" role="alert" tabindex="-1" hidden></p>
+    <div class="demo-actions">
+      <button class="demo-link" type="button" data-next="13-seleccionar-horario.html">Continuar a horario</button>
+      <a class="demo-link is-secondary" href="11-seleccionar-espacio.html">Volver a elegir espacio</a>
+    </div>
+    </div>
+    <aside class="flow-aside demo-card" aria-label="Resumen de tu solicitud">
+      <img class="flow-aside__art" src="../assets/ilustraciones/calendario.svg" alt="" width="240" height="180">
+      <h2>Tu solicitud</h2>
+    <dl>
+      <div><dt>Espacio</dt><dd data-value="space">Pendiente de selección</dd></div>
+      <div><dt>Fecha</dt><dd data-value="date">Pendiente de selección</dd></div>
+      <div><dt>Horario</dt><dd data-value="slot">Pendiente de selección</dd></div>
+    </dl>
+      <p class="screen-muted">Toca un día del calendario. Las fechas pasadas no se pueden elegir.</p>
+    </aside>
+    </div>
+  </main>
+</div></div>
+<script src="../layout.js"></script><script src="asistente-reserva.js"></script>
+</body>
+</html>

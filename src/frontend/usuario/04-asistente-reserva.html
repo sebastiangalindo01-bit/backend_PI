@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Asistente de reservas · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen assistant-start">
+    <section class="page-hero">
+      <div><h1>Asistente de reservas</h1><p>Selecciona el espacio y el horario que deseas solicitar. Te guiamos en 4 pasos sencillos.</p></div>
+      <img class="page-hero__art" src="../assets/ilustraciones/laboratorio.svg" alt="" width="240" height="180">
+    </section>
+    <div class="prototype-notice">Modo demostración: las selecciones viven solo en memoria mientras recorres estos pasos. No se consulta disponibilidad real ni se guarda una reserva.</div>
+    <ol class="steps-grid" aria-label="Pasos para solicitar una reserva">
+      <li class="step-card"><span class="step-card__num">1</span><strong>Espacio</strong><span>Elige el laboratorio o la sala.</span></li>
+      <li class="step-card"><span class="step-card__num">2</span><strong>Fecha</strong><span>Marca el día en el calendario.</span></li>
+      <li class="step-card"><span class="step-card__num">3</span><strong>Horario</strong><span>Escoge una franja libre.</span></li>
+      <li class="step-card"><span class="step-card__num">4</span><strong>Revisión</strong><span>Confirma los datos de tu solicitud.</span></li>
+    </ol>
+    <section class="demo-card assistant-entry" aria-labelledby="assistant-selection-title">
+      <h2 id="assistant-selection-title">Selección de la demostración</h2>
+      <dl class="demo-summary">
+        <div><dt>Espacio</dt><dd data-value="space">Pendiente de selección</dd></div>
+        <div><dt>Fecha</dt><dd data-value="date">Pendiente de selección</dd></div>
+        <div><dt>Horario</dt><dd data-value="slot">Pendiente de selección</dd></div>
+      </dl>
+      <div class="demo-actions">
+        <a class="demo-link" href="11-seleccionar-espacio.html">Iniciar recorrido</a>
+        <a class="demo-link is-secondary" href="19-menu-asistente-activo.html">Ver menú con el asistente activo</a>
+      </div>
+      <p class="prototype-notice" data-navigation-error role="alert" hidden></p>
+    </section>
+  </main>
+</div></div>
+<script src="../layout.js"></script><script src="asistente-reserva.js"></script>
+</body>
+</html>

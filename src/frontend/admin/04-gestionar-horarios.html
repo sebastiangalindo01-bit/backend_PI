@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Gestión de horarios · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+<link href="Demo_forms.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap">
+<div class="app-frame">
+<div class="app-content demo-screen">
+<div class="df-head">
+<div class="screen-heading"><h1>Gestión de horarios</h1><p>Administración de franjas disponibles por espacio.</p></div>
+<button class="demo-link" id="btn-new" type="button">+ Agregar horario</button>
+</div>
+<div class="prototype-notice">Modo demostración: los formularios no guardan ni modifican información real.</div>
+<div class="df-root" id="root"></div>
+</div>
+</div>
+</div>
+<script src="../layout.js"></script>
+<script src="Demo_forms.js"></script>
+<script>
+var DAYS = { 'Lunes': [1], 'Martes': [2], 'Miércoles': [3], 'Jueves': [4], 'Viernes': [5], 'Sábado': [6],
+  'Lunes a viernes': [1, 2, 3, 4, 5], 'Lunes a sábado': [1, 2, 3, 4, 5, 6] };
+var rows = [
+  { espacio: 'Laboratorio de Sistemas 1', dia: 'Lunes a viernes', apertura: '08:00', cierre: '18:00' },
+  { espacio: 'Sala de estudio biblioteca', dia: 'Lunes a sábado', apertura: '09:00', cierre: '17:00' }
+];
+function mins(t) { var p = t.split(':'); return +p[0] * 60 + +p[1]; }
+DemoCrud({
+  root: '#root', newBtn: '#btn-new', noun: 'horario', rows: rows,
+  rowName: function (r) { return r.espacio + ' · ' + r.dia + ' ' + r.apertura + '–' + r.cierre; },
+  columns: [
+    { key: 'espacio', label: 'Espacio' }, { key: 'dia', label: 'Día' },
+    { key: 'apertura', label: 'Apertura' }, { key: 'cierre', label: 'Cierre' }
+  ],
+  fields: [
+    { id: 'espacio', label: 'Espacio', type: 'select', required: true, wide: true, deps: ['cierre'],
+      options: ['Laboratorio de Sistemas 1', 'Sala de estudio biblioteca', 'Laboratorio de Redes'],
+      requiredMsg: 'Selecciona el espacio.' },
+    { id: 'dia', label: 'Día', type: 'select', required: true, wide: true, deps: ['cierre'], options: Object.keys(DAYS) },
+    { id: 'apertura', label: 'Hora de apertura', type: 'time', required: true, deps: ['cierre'], hint: 'Desde las 06:00.',
+      validate: function (v) { return mins(v) < 360 ? 'La apertura no puede ser antes de las 06:00.' : ''; } },
+    { id: 'cierre', label: 'Hora de cierre', type: 'time', required: true, hint: 'Hasta las 22:00.',
+      validate: function (v, all, cur) {
+        if (mins(v) > 1320) return 'El cierre no puede ser después de las 22:00.';
+        if (!all.apertura) return '';
+        if (mins(v) <= mins(all.apertura)) return 'El cierre debe ser posterior a la apertura (' + all.apertura + ').';
+        if (mins(v) - mins(all.apertura) < 30) return 'La franja debe durar al menos 30 minutos.';
+        if (all.espacio && all.dia) {
+          var clash = rows.filter(function (r) {
+            return r !== cur && r.espacio === all.espacio &&
+              DAYS[r.dia].some(function (d) { return DAYS[all.dia].indexOf(d) > -1; }) &&
+              mins(all.apertura) < mins(r.cierre) && mins(v) > mins(r.apertura);
+          })[0];
+          if (clash) return 'Se cruza con «' + clash.dia + ' ' + clash.apertura + '–' + clash.cierre + '» de este espacio. Cambia el día o las horas.';
+        }
+        return '';
+      } }
+  ]
+});
+</script>
+</body>
+</html>

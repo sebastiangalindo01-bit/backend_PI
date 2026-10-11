@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Detalle del espacio · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <div class="detail-head">
+      <div class="screen-heading">
+        <h1 id="space-name">Espacio</h1>
+        <p>Información del espacio antes de iniciar una solicitud.</p>
+      </div>
+      <div class="detail-navigation">
+        <a href="01-inicio.html" class="detail-navigation__button">Inicio</a>
+        <a href="02-explorar-espacios.html" class="detail-navigation__button">Volver a espacios</a>
+      </div>
+    </div>
+
+    <!-- Detalle inyectado por JS -->
+    <div id="space-detail" class="space-detail"></div>
+
+    <h2 class="section-title">Disponibilidad de ejemplo</h2>
+    <section class="demo-card" aria-label="Disponibilidad de ejemplo">
+      <p class="screen-muted">Franjas de muestra para este espacio. Selecciona una fecha en el asistente para revisar opciones reales de la demostración.</p>
+      <div class="slot-chips">
+        <div class="slot-chip">08:00–09:00<small>Disponible · ejemplo</small></div>
+        <div class="slot-chip">11:00–13:00<small>Disponible · ejemplo</small></div>
+        <div class="slot-chip">14:00–16:00<small>Disponible · ejemplo</small></div>
+      </div>
+    </section>
+  </main>
+</div></div>
+
+<script src="../spaces.js"></script>
+<script src="../layout.js"></script>
+<script>
+(function () {
+  'use strict';
+
+  var api = window.SAICI && window.SAICI.spaces;
+  var detailRoot = document.getElementById('space-detail');
+  var spaceName  = document.getElementById('space-name');
+
+  var id = new URLSearchParams(window.location.search).get('id');
+  var space = api && api.getSpaceById(id);
+
+  if (!space) {
+    spaceName.textContent = 'Espacio no encontrado';
+    detailRoot.innerHTML =
+      '<div class="empty-state">' +
+        '<div class="empty-state__title">No se encontró el espacio solicitado</div>' +
+        '<div class="empty-state__description">' +
+          '<a class="empty-state__link" href="02-explorar-espacios.html">Volver a explorar espacios</a>' +
+        '</div>' +
+      '</div>';
+    return;
+  }
+
+  spaceName.textContent = space.name;
+
+  var isAvailable = space.availability === 'Disponible';
+  var statusClass = isAvailable
+    ? 'space-detail__status space-detail__status--available'
+    : 'space-detail__status space-detail__status--busy';
+
+  var fields = [
+    ['Tipo de espacio',     space.type],
+    ['Ubicación',           space.location],
+    ['Capacidad',           space.capacity + ' personas'],
+    ['Recursos',            space.resources],
+    ['Horario ilustrativo', space.schedule]
+  ].map(function (f) {
+    return '<div>' +
+      '<span class="space-detail__field-label">' + f[0] + ':</span> ' +
+      '<span class="space-detail__field-value">' + f[1] + '</span>' +
+    '</div>';
+  }).join('');
+
+  detailRoot.innerHTML =
+    '<div class="space-detail__media" style="background:' + space.color + '">' +
+      '<div class="space-detail__icon" style="color:' + space.accent + '">' + space.icon + '</div>' +
+    '</div>' +
+    '<div class="space-detail__info">' +
+      '<div class="' + statusClass + '">' + space.status + '</div>' +
+      '<div class="space-detail__fields">' + fields + '</div>' +
+      '<a class="space-detail__cta" href="04-asistente-reserva.html?id=' +
+        encodeURIComponent(space.id) + '">Solicitar reserva</a>' +
+    '</div>';
+})();
+</script>
+</body>
+</html>

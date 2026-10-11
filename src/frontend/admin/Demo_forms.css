@@ -1,0 +1,45 @@
+/* SAICI · Formularios de demostración (admin). Archivo nuevo: no modifica styles.css */
+.df-root{width:100%;display:flex;flex-direction:column;gap:16px}
+.df-head{display:flex;width:100%;gap:16px;align-items:flex-start;justify-content:space-between}
+.df-head .screen-heading{margin:0}
+button.demo-link{font-family:inherit;cursor:pointer}
+.df-panel{width:100%;box-sizing:border-box;padding:22px;background:#fff;border:1px solid #e4eae4;border-radius:12px;box-shadow:0 2px 8px rgba(18,59,34,.06)}
+.df-panel h2{margin:0 0 4px;color:#193a22;font-size:18px}
+.df-panel h2:focus{outline:none}
+.df-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
+.df-field{display:flex;flex-direction:column;gap:6px;min-width:0}
+.df-field.is-wide{grid-column:1/-1}
+.df-field label{color:#38423a;font-size:12px;font-weight:700}
+.df-field input,.df-field select,.df-field textarea{width:100%;min-height:42px;box-sizing:border-box;padding:10px 12px;border:1px solid #cfd8d1;border-radius:7px;background:#fff;color:#193a22;font:inherit;font-size:14px}
+.df-field input:focus,.df-field select:focus,.df-field textarea:focus{outline:3px solid #77bf91;outline-offset:1px;border-color:#27823d}
+.df-field.has-error input,.df-field.has-error select,.df-field.has-error textarea{border-color:#a52828;background:#fff8f8}
+.df-field.has-error input:focus,.df-field.has-error select:focus{outline-color:#e7a3a3}
+.df-error{color:#a52828;font-size:12px;line-height:1.4;font-weight:600}
+.df-error:empty,.df-hint:empty{display:none}
+.df-hint{color:#727c73;font-size:11px}
+.df-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.df-review{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:16px 0 0}
+.df-review>div{padding:12px 14px;border:1px solid #e4eae4;border-radius:8px;background:#f8faf8}
+.df-review dt{color:#647267;font-size:11px}
+.df-review dd{margin:5px 0 0;color:#193a22;font-size:14px;font-weight:700;overflow-wrap:anywhere}
+.df-review .is-wide{grid-column:1/-1}
+.df-table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden;outline:1px solid #e4eae4;outline-offset:-1px}
+.df-table th{padding:13px 14px;background:#f8faf8;border-bottom:1px solid #edf0ed;color:#657067;font-size:11px;text-align:left}
+.df-table td{padding:12px 14px;border-bottom:1px solid #edf0ed;color:#38423a;font-size:12px}
+.df-badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#e8f5e9;color:#246d38;font-size:10px;font-weight:700}
+.df-badge.is-off{background:#fbe9e7;color:#9a322b}
+.df-table .demo-link{min-height:34px;padding:6px 12px}
+@media (max-width:620px){
+  .df-head{flex-direction:column}
+  .df-head .demo-link{width:100%}
+  .df-panel{padding:16px}
+  .df-grid,.df-review{grid-template-columns:minmax(0,1fr)}
+  .df-field input,.df-field select,.df-field textarea{font-size:16px}
+  .df-actions{flex-direction:column}
+  .df-actions .demo-link{width:100%}
+  .df-table thead{display:none}
+  .df-table,.df-table tbody,.df-table tr,.df-table td{display:block;width:100%;box-sizing:border-box}
+  .df-table tr{padding:8px 0;border-bottom:8px solid #f5f7f5}
+  .df-table td{display:flex;justify-content:space-between;gap:12px;padding:8px 14px;border:0;text-align:right}
+  .df-table td::before{content:attr(data-label);color:#647267;font-weight:700;text-align:left}
+}

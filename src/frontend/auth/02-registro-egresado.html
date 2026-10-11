@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Registro de egresado · SAICI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="auth.css">
+</head>
+<body data-page="registro">
+<main class="shell">
+  <aside class="brand-panel" aria-hidden="true">
+    <div>
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="">
+      <h2>SAICI</h2>
+      <p>Reserva de laboratorios para egresados</p>
+    </div>
+    <p class="proto">Prototipo · datos de ejemplo</p>
+  </aside>
+
+  <div class="form-side">
+    <header class="mobile-brand">
+      <img class="uceva-logo" src="../assets/uceva-imagotipo.png" width="1000" height="302" alt="UCEVA · Unidad Central del Valle del Cauca">
+      <div><strong>SAICI</strong><span class="tagline">Reserva de laboratorios para egresados</span></div>
+    </header>
+
+    <h1>Crear cuenta de egresado</h1>
+    <p class="lead">Completa tus datos para registrarte. Todos los campos son obligatorios.</p>
+
+    <form id="registro-form" novalidate>
+      <div class="summary" role="alert" tabindex="-1" hidden></div>
+      <div class="field" data-field="nombres">
+        <label for="nombres">Nombres</label>
+        <input class="control" id="nombres" name="nombres" type="text" placeholder="Ej. Laura Andrea" autocomplete="given-name" aria-describedby="nombres-error" >
+        <p class="error" id="nombres-error" hidden></p>
+      </div>
+      <div class="field" data-field="apellidos">
+        <label for="apellidos">Apellidos</label>
+        <input class="control" id="apellidos" name="apellidos" type="text" placeholder="Ej. Gómez Ruiz" autocomplete="family-name" aria-describedby="apellidos-error" >
+        <p class="error" id="apellidos-error" hidden></p>
+      </div>
+      <div class="field" data-field="email">
+        <label for="email">Correo electrónico</label>
+        <input class="control" id="email" name="email" type="email" placeholder="nombre@correo.com" autocomplete="email" aria-describedby="email-error" inputmode="email" autocapitalize="none" spellcheck="false">
+        <p class="error" id="email-error" hidden></p>
+      </div>
+      <div class="field" data-field="telefono">
+        <label for="telefono">Teléfono (10 dígitos)</label>
+        <input class="control" id="telefono" name="telefono" type="tel" placeholder="3001234567" autocomplete="tel" aria-describedby="telefono-hint telefono-error" inputmode="numeric" maxlength="14">
+        <p class="hint" id="telefono-hint">Solo números, sin espacios ni +57.</p>
+        <p class="error" id="telefono-error" hidden></p>
+      </div>
+      <div class="field" data-field="password">
+        <label for="password">Contraseña (mínimo 8 caracteres)</label>
+        <div class="input-wrap">
+          <input class="control has-toggle" id="password" name="password" type="password" placeholder="••••••••" autocomplete="new-password" aria-describedby="password-error" >
+          <button type="button" class="pw-toggle" data-toggle-password="password" data-label="contraseña" aria-pressed="false" aria-label="Mostrar contraseña">Ver</button>
+        </div>
+        <p class="error" id="password-error" hidden></p>
+      </div>
+      <div class="field" data-field="confirm">
+        <label for="confirm">Confirmar contraseña</label>
+        <div class="input-wrap">
+          <input class="control has-toggle" id="confirm" name="confirm" type="password" placeholder="••••••••" autocomplete="new-password" aria-describedby="confirm-error" >
+          <button type="button" class="pw-toggle" data-toggle-password="confirm" data-label="confirmación de contraseña" aria-pressed="false" aria-label="Mostrar confirmación de contraseña">Ver</button>
+        </div>
+        <p class="error" id="confirm-error" hidden></p>
+      </div>
+      <ul class="reqs" aria-label="Requisitos de la contraseña">
+        <li data-req="length"><span class="req-icon" aria-hidden="true"></span><span class="sr-only req-state">Pendiente: </span>Mínimo 8 caracteres</li>
+        <li data-req="match"><span class="req-icon" aria-hidden="true"></span><span class="sr-only req-state">Pendiente: </span>Las dos contraseñas coinciden</li>
+      </ul>
+
+      <div class="field" data-field="terms">
+        <div class="check">
+          <input type="checkbox" id="terms" name="terms" aria-describedby="terms-error">
+          <label for="terms">Acepto el tratamiento de datos personales</label>
+        </div>
+        <p class="error" id="terms-error" hidden></p>
+      </div>
+
+      <button class="btn stack-gap" type="submit" id="btn-submit">Crear cuenta</button>
+    </form>
+
+    <p class="divider-text stack-gap center">¿Ya tienes una cuenta? <a class="link" href="01-login.html">Iniciar sesión</a></p>
+
+    <p class="caption">GUI-01 - Registro | CU-00 Registrar egresado | HU-01, HU-02</p>
+  </div>
+</main>
+<script src="auth.js"></script>
+</body>
+</html>

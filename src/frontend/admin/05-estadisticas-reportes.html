@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Estadísticas y reportes · SAICI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="../styles.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="wrap"><div class="app-frame">
+  <main class="app-content demo-screen">
+    <section class="page-hero">
+      <div>
+        <h1>Estadísticas y reportes</h1>
+        <p>Indicadores visuales de ocupación (datos ilustrativos).</p>
+        <a class="page-hero__cta" href="#reporte-semanal">Ver reporte semanal</a>
+      </div>
+      <img class="page-hero__art" src="../assets/ilustraciones/estadisticas.svg" alt="" width="240" height="180">
+    </section>
+    <div class="filter-bar" role="group" aria-label="Filtros del reporte">
+      <label>Desde<input type="date"></label>
+      <label>Hasta<input type="date"></label>
+      <label>Espacio
+        <select><option>Todos los espacios</option><option>Laboratorio de Sistemas 1</option><option>Laboratorio de Redes</option><option>Sala de estudio biblioteca</option></select>
+      </label>
+    </div>
+    <section class="stat-grid is-two" aria-label="Indicadores del período">
+      <div class="stat-card"><span class="stat-card__label">Ocupación promedio</span><span class="stat-card__value">68%</span><span class="stat-card__note">Porcentaje ficticio para diseño</span></div>
+      <div class="stat-card"><span class="stat-card__label">Reservas del período</span><span class="stat-card__value">124</span><span class="stat-card__note">Conteo ficticio para diseño</span></div>
+    </section>
+    <h2 class="section-title" id="reporte-semanal">Uso por período</h2>
+    <div class="chart-card">
+      <div class="bar-chart" role="img" aria-label="Uso por día de la semana, datos ilustrativos: lunes 45 %, martes 70 %, miércoles 52 %, jueves 80 %, viernes 60 %, sábado 90 %, domingo 66 %"><div class="bar-chart__bar" style="--h:45%"></div><div class="bar-chart__bar" style="--h:70%"></div><div class="bar-chart__bar" style="--h:52%"></div><div class="bar-chart__bar" style="--h:80%"></div><div class="bar-chart__bar" style="--h:60%"></div><div class="bar-chart__bar" style="--h:90%"></div><div class="bar-chart__bar" style="--h:66%"></div></div>
+      <div class="bar-chart__labels" aria-hidden="true"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+    </div>
+  </main>
+</div></div>
+<script src="../layout.js"></script>
+</body>
+</html>
