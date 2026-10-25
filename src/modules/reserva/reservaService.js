@@ -170,28 +170,35 @@ const crearReserva = async({
 
 //Obtener todas las reservas
 
-const obtenerReservas = async () => {
-    const result = await pool.query(`
-        SELECT 
+const obtenerReservas = async (id_usuario = null) => {
+    const consulta = `
+        SELECT
             r.id_reserva,
             r.id_usuario,
             u.nombres,
             u.apellidos,
             r.id_laboratorio,
-            l.nombre AS laboratorio, 
+            l.nombre AS laboratorio,
             r.fecha,
             r.hora_inicio,
             r.hora_fin,
             r.estado,
             r.fecha_creacion
         FROM reserva AS r
-        INNER JOIN usuario AS u ON r.id_usuario = u.id_usuario
-        INNER JOIN laboratorio AS l ON r.id_laboratorio = l.id_laboratorio
+        INNER JOIN usuario AS u
+            ON r.id_usuario = u.id_usuario
+        INNER JOIN laboratorio AS l
+            ON r.id_laboratorio = l.id_laboratorio
+        ${id_usuario !== null ? 'WHERE r.id_usuario = $1' : ''}
         ORDER BY r.fecha DESC, r.hora_inicio DESC
-        `);
+    `;
 
-        return result.rows[0];
+    const parametros = id_usuario !== null ? [id_usuario] : [];
+    const result = await pool.query(consulta, parametros);
+
+    return result.rows;
 };
+
 
 const obtenerReservaPorId = async (id_reserva) => {
     const result = await pool.query(
@@ -213,7 +220,7 @@ const obtenerReservaPorId = async (id_reserva) => {
         WHERE r.id_reserva = $1
         `, [id_reserva]);
 
-        return result.rows[0];
+        return result.rows;
 };
 
 const editarReserva = async (
