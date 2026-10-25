@@ -526,10 +526,208 @@ const nuevaPassword = async (req, res) => {
 
 };
 
+
+const actualizarPerfil = async (req, res) => {
+    try {
+        const idUsuario = req.usuario?.id_usuario;
+        const { nombres, apellidos, email, telefono } = req.body;
+
+        if (!idUsuario) {
+            return res.status(401).json({
+                mensaje: "No se pudo identificar al usuario autenticado"
+            });
+        }
+
+        if (
+            typeof nombres !== "string" ||
+            typeof apellidos !== "string" ||
+            typeof email !== "string" ||
+            typeof telefono !== "string" ||
+            !nombres.trim() ||
+            !apellidos.trim() ||
+            !email.trim() ||
+            !telefono.trim()
+        ) {
+            return res.status(400).json({
+                mensaje: "Todos los campos son obligatorios"
+            });
+        }
+
+        const nombreLimpio = nombres.trim();
+        const apellidoLimpio = apellidos.trim();
+        const emailLimpio = email.trim().toLowerCase();
+        const telefonoLimpio = telefono.trim();
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailLimpio)) {
+            return res.status(400).json({
+                mensaje: "Ingresa un correo electrónico válido"
+            });
+        }
+
+        if (!/^\d{10}$/.test(telefonoLimpio)) {
+            return res.status(400).json({
+                mensaje: "El teléfono debe tener exactamente 10 dígitos"
+            });
+        }
+
+        const usuarioExistente = await pool.query(
+            `SELECT id_usuario
+             FROM usuario
+             WHERE (LOWER(email) = $1 OR telefono = $2)
+               AND id_usuario <> $3`,
+            [emailLimpio, telefonoLimpio, idUsuario]
+        );
+
+        if (usuarioExistente.rows.length > 0) {
+            return res.status(409).json({
+                mensaje: "El correo o el teléfono ya pertenece a otro usuario"
+            });
+        }
+
+        const resultado = await pool.query(
+            `UPDATE usuario
+             SET nombres = $1,
+                 apellidos = $2,
+                 email = $3,
+                 telefono = $4
+             WHERE id_usuario = $5
+             RETURNING
+                 id_usuario,
+                 nombres,
+                 apellidos,
+                 email,
+                 telefono,
+                 rol,
+                 tipo_usuario`,
+            [
+                nombreLimpio,
+                apellidoLimpio,
+                emailLimpio,
+                telefonoLimpio,
+                idUsuario
+            ]
+        );
+
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({
+                mensaje: "Usuario no encontrado"
+            });
+        }
+
+        const usuario = resultado.rows[0];
+
+        return res.status(200).json({
+            mensaje: "Perfil actualizado correctamente",
+            usuario
+        });
+
+    } catch (error) {
+        if (error.code === "23505") {
+            return res.status(409).json({
+                mensaje: "El correo o el teléfono ya está registrado"
+            });
+        }
+
+        console.error("Error actualizando perfil:", error);
+
+        return res.status(500).json({
+            mensaje: "Error interno del servidor"
+        });
+    }
+};
+
+
+
+const cambiarPassword = async (req, res) => {
+    try {
+        const { contrasenaActual, nuevaContrasena, confirmarContrasena } =
+            req.body;
+
+        const idUsuario = req.usuario?.id_usuario;
+
+        if (!idUsuario) {
+            return res.status(401).json({
+                mensaje: 'No se pudo identificar al usuario autenticado.',
+            });
+        }
+
+        if (!contrasenaActual || !nuevaContrasena || !confirmarContrasena) {
+            return res.status(400).json({
+                mensaje: 'Todos los campos de contraseña son obligatorios.',
+            });
+        }
+
+        if (nuevaContrasena !== confirmarContrasena) {
+            return res.status(400).json({
+                mensaje: 'Las contraseñas nuevas no coinciden.',
+            });
+        }
+
+        if (nuevaContrasena === contrasenaActual) {
+            return res.status(400).json({
+                mensaje: 'La nueva contraseña debe ser diferente a la actual.',
+            });
+        }
+
+        if (nuevaContrasena.length < 8) {
+            return res.status(400).json({
+                mensaje: 'La nueva contraseña debe tener al menos 8 caracteres.',
+            });
+        }
+
+        const resultado = await pool.query(
+            `SELECT contrasena
+       FROM usuario
+       WHERE id_usuario = $1`,
+            [idUsuario]
+        );
+
+        if (resultado.rows.length === 0) {
+            return res.status(404).json({
+                mensaje: 'Usuario no encontrado.',
+            });
+        }
+
+        const contrasenaValida = await bcrypt.compare(
+            contrasenaActual,
+            resultado.rows[0].contrasena
+        );
+
+        if (!contrasenaValida) {
+            return res.status(400).json({
+                mensaje: 'La contraseña actual es incorrecta.',
+            });
+        }
+
+        const hashNuevo = await bcrypt.hash(nuevaContrasena, 10);
+
+        await pool.query(
+            `UPDATE usuario
+       SET contrasena = $1
+       WHERE id_usuario = $2`,
+            [hashNuevo, idUsuario]
+        );
+
+        return res.status(200).json({
+            success: true,
+            mensaje: 'Contraseña actualizada correctamente.',
+        });
+    } catch (error) {
+        console.error('Error al cambiar contraseña:', error);
+
+        return res.status(500).json({
+            mensaje: 'Error interno al cambiar la contraseña.',
+        });
+    }
+};
+
+
 module.exports = {
     registrarUsuario,
     loginUsuario,
     recuperarPassword,
     verificarCodigo,
-    nuevaPassword
+    nuevaPassword,
+    actualizarPerfil,
+    cambiarPassword
 };

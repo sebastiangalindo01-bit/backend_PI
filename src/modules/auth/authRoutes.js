@@ -5,7 +5,9 @@ const {
     loginUsuario,
     recuperarPassword,
     verificarCodigo,
-    nuevaPassword
+    nuevaPassword,
+    actualizarPerfil,
+    cambiarPassword
 } = require("./authController");
 
 const verificarToken = require("../../middlewares/authMiddleware");
@@ -17,6 +19,8 @@ router.post("/login", loginUsuario);
 router.post("/recuperar-password", recuperarPassword);
 router.post("/verificar-codigo", verificarCodigo);
 router.post("/nueva-password", nuevaPassword);
+router.put("/perfil", verificarToken, actualizarPerfil);
+router.put('/cambiar-password', verificarToken, cambiarPassword);
 
 router.get(
     "/perfil",
@@ -30,5 +34,7 @@ router.get(
 
     }
 );
+
+
 
 module.exports = router;

@@ -42,19 +42,26 @@ const crearReserva = async (req, res) => {
     }
 };
 
-//Obtener todas las reservas
+
+//Obtener reservas por usuario, si es administrador obtiene todas las reservas
 
 const obtenerReservas = async (req, res) => {
-
     try {
+        const id_usuario = req.usuario.id_usuario;
+        const rol = (req.usuario.rol || '').toUpperCase();
 
-        const reservas = await reservaService.obtenerReservas();
+        let reservas;
+
+        if (rol === 'ADMINISTRADOR') {
+            reservas = await reservaService.obtenerReservas();
+        } else {
+            reservas = await reservaService.obtenerReservas(id_usuario);
+        }
 
         return res.status(200).json(reservas);
 
     } catch (error) {
-
-        console.error(error);
+        console.error('Error al obtener reservas:', error);
 
         return res.status(500).json({
             error: error.message
